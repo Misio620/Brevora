@@ -1,0 +1,18 @@
+{
+  "name": "brevora",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered video digest — grasp key insights from your subscriptions in minutes",
+  "scripts": {
+    "install:frontend": "cd frontend && pnpm install",
+    "install:backend": "cd backend && py -m venv venv && venv\\Scripts\\pip install -r requirements.txt",
+    "postinstall": "pnpm run install:frontend",
+    "predev": "node -e \"const k=require('child_process');['5173','8002'].forEach(p=>{try{const r=k.execSync('netstat -ano|findstr :'+p+'|findstr LISTENING',{encoding:'utf8'});r.split('\\n').forEach(l=>{const pid=l.trim().split(/\\s+/).pop();if(pid&&pid!=='0')try{k.execSync('taskkill /F /PID '+pid)}catch{}});}catch{}})\"",
+    "dev": "concurrently -n api,web -c blue,green \"pnpm run dev:backend\" \"pnpm run dev:frontend\"",
+    "dev:frontend": "cd frontend && pnpm run dev",
+    "dev:backend": "cd backend && venv\\Scripts\\python -m uvicorn app.main:app --host 127.0.0.1 --port 8002 --reload"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

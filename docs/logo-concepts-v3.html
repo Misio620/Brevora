@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brevora — Logo Concepts v3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #2563EB;
+      --blue-light: #3b82f6;
+      --blue-dim:   #1d4ed8;
+      --slate-900:  #0f172a;
+      --slate-800:  #1e293b;
+      --slate-700:  #334155;
+      --slate-600:  #475569;
+      --slate-400:  #94a3b8;
+      --slate-200:  #e2e8f0;
+      --white:      #ffffff;
+      --card-bg:    rgba(30, 41, 59, 0.55);
+      --card-border: rgba(148, 163, 184, 0.12);
+      --card-border-hover: rgba(37, 99, 235, 0.45);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background-color: var(--slate-900);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Background texture ────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      /* subtle dot grid */
+      background-image:
+        radial-gradient(circle, rgba(148,163,184,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    /* soft radial glow near top */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(37,99,235,0.13) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ─── Scroll-reveal keyframes ───────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 0.5; }
+      50%       { opacity: 1; }
+    }
+
+    /* ─── Layout wrappers ───────────────────────────────────────────── */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 32px 120px;
+    }
+
+    /* ─── Hero ──────────────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 112px 0 88px;
+      animation: fadeIn 1s ease both;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      margin-bottom: 36px;
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--blue-light);
+      opacity: 0.6;
+    }
+
+    .hero-wordmark {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(80px, 12vw, 140px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      /* subtle shimmer on the text */
+      background: linear-gradient(
+        105deg,
+        #e2e8f0 0%,
+        #ffffff 35%,
+        #93c5fd 52%,
+        #ffffff 65%,
+        #e2e8f0 100%
+      );
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 6s linear 1.2s infinite;
+    }
+
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 28px 0 22px;
+    }
+
+    .hero-divider-line {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(148,163,184,0.35), transparent);
+    }
+
+    .hero-etymology {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.22em;
+      color: var(--slate-400);
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--slate-400);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .hero-label {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(18px, 3vw, 26px);
+      font-style: italic;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── Section label ─────────────────────────────────────────────── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .section-label span {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--slate-400);
+      white-space: nowrap;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(148,163,184,0.2), transparent);
+    }
+
+    /* ─── Cards grid ────────────────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    @media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .cards-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px 28px 28px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+      opacity: 0;
+      /* JS-free stagger via animation-delay on nth-child */
+    }
+
+    .card:hover {
+      border-color: var(--card-border-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.35), 0 0 0 1px rgba(37,99,235,0.15);
+    }
+
+    /* Stagger delays */
+    .card:nth-child(1) { animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
+    .card:nth-child(2) { animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.25s both; }
+    .card:nth-child(3) { animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.35s both; }
+    .card:nth-child(4) { animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.45s both; }
+    .card:nth-child(5) { animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.55s both; }
+    .card:nth-child(6) { animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.65s both; }
+
+    .card-index {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: var(--blue-light);
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .card-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--slate-400);
+      line-height: 1.6;
+      margin-bottom: 28px;
+      min-height: 42px;
+    }
+
+    /* ─── Swatch row ────────────────────────────────────────────────── */
+    .swatches {
+      display: flex;
+      gap: 10px;
+    }
+
+    .swatch {
+      flex: 1;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 12px 16px;
+    }
+
+    .swatch.dark  { background: #0f172a; border: 1px solid rgba(255,255,255,0.07); }
+    .swatch.light { background: #f1f5f9; border: 1px solid rgba(0,0,0,0.06); }
+
+    .swatch-sizes {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .swatch-label {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      opacity: 0.4;
+    }
+
+    .swatch.dark  .swatch-label { color: var(--white); }
+    .swatch.light .swatch-label { color: var(--slate-900); }
+
+    /* ─── Comparison bar ────────────────────────────────────────────── */
+    .comparison {
+      margin-top: 24px;
+      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.9s both;
+    }
+
+    .comparison-inner {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px 48px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .comparison-title {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--slate-400);
+      margin-bottom: 32px;
+    }
+
+    .comparison-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .comparison-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .comparison-name {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--slate-400);
+    }
+
+    /* ─── Footer ────────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding-top: 64px;
+      font-size: 12px;
+      color: var(--slate-600);
+      letter-spacing: 0.06em;
+      animation: fadeIn 1s ease 1.5s both;
+    }
+
+    .footer strong {
+      color: var(--slate-400);
+      font-weight: 500;
+    }
+
+    /* ─── Divider between sections ──────────────────────────────────── */
+    .section-sep {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, rgba(148,163,184,0.25), transparent);
+      margin: 0 auto 72px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <header class="hero">
+    <div class="hero-eyebrow">Brand Identity Exploration</div>
+    <h1 class="hero-wordmark">Brevora</h1>
+    <div class="hero-divider">
+      <span class="hero-divider-line"></span>
+      <span class="hero-etymology">brevis &middot; ora</span>
+      <span class="hero-divider-line"></span>
+    </div>
+    <p class="hero-subtitle">brief &nbsp;&bull;&nbsp; time &nbsp;&bull;&nbsp; clarity</p>
+    <p class="hero-label">Logo Concepts &mdash; v3</p>
+  </header>
+
+  <!-- ══════════════ GRID ══════════════ -->
+  <div class="section-label"><span>Six Directions</span></div>
+  <div class="cards-grid">
+
+    <!-- ─── CARD 1: Hourglass ─── -->
+    <article class="card">
+      <div class="card-index">01 &nbsp;/&nbsp; 06</div>
+      <h2 class="card-title">Hourglass</h2>
+      <p class="card-desc">Refined minimal hourglass. Two triangles sharing a pinch point — a moment of transition between wasted time and saved time.</p>
+      <div class="swatches">
+        <!-- DARK swatch -->
+        <div class="swatch dark">
+          <div class="swatch-sizes">
+            <!-- 64px -->
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Hourglass logo 64px">
+              <!-- outer frame lines -->
+              <line x1="18" y1="10" x2="46" y2="10" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="18" y1="54" x2="46" y2="54" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- top triangle (empty) -->
+              <path d="M18 10 L46 10 L32 32 Z" fill="#2563EB" opacity="0.15"/>
+              <path d="M18 10 L46 10 L32 32 Z" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+              <!-- bottom triangle (filled = sand settled) -->
+              <path d="M32 32 L22 54 L42 54 Z" fill="#2563EB" opacity="0.9"/>
+              <!-- small sand pile highlight -->
+              <path d="M26 54 Q32 46 38 54" fill="#3b82f6" opacity="0.4"/>
+              <!-- center pinch dots -->
+              <circle cx="32" cy="32" r="1.5" fill="#93c5fd"/>
+            </svg>
+            <!-- 40px -->
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Hourglass logo 40px">
+              <line x1="18" y1="10" x2="46" y2="10" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="18" y1="54" x2="46" y2="54" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M18 10 L46 10 L32 32 Z" fill="#2563EB" opacity="0.15"/>
+              <path d="M18 10 L46 10 L32 32 Z" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+              <path d="M32 32 L22 54 L42 54 Z" fill="#2563EB" opacity="0.9"/>
+              <circle cx="32" cy="32" r="1.5" fill="#93c5fd"/>
+            </svg>
+            <!-- 24px -->
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Hourglass logo 24px">
+              <line x1="18" y1="10" x2="46" y2="10" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <line x1="18" y1="54" x2="46" y2="54" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <path d="M18 10 L46 10 L32 32 Z" fill="#2563EB" opacity="0.2"/>
+              <path d="M32 32 L22 54 L42 54 Z" fill="#2563EB"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Dark</span>
+        </div>
+        <!-- LIGHT swatch -->
+        <div class="swatch light">
+          <div class="swatch-sizes">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="18" y1="10" x2="46" y2="10" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="18" y1="54" x2="46" y2="54" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M18 10 L46 10 L32 32 Z" fill="#2563EB" opacity="0.1"/>
+              <path d="M18 10 L46 10 L32 32 Z" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+              <path d="M32 32 L22 54 L42 54 Z" fill="#2563EB"/>
+              <path d="M26 54 Q32 46 38 54" fill="#1d4ed8" opacity="0.35"/>
+              <circle cx="32" cy="32" r="1.5" fill="#1d4ed8"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="18" y1="10" x2="46" y2="10" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="18" y1="54" x2="46" y2="54" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M18 10 L46 10 L32 32 Z" fill="#2563EB" opacity="0.1"/>
+              <path d="M18 10 L46 10 L32 32 Z" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+              <path d="M32 32 L22 54 L42 54 Z" fill="#2563EB"/>
+              <circle cx="32" cy="32" r="1.5" fill="#1d4ed8"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="18" y1="10" x2="46" y2="10" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <line x1="18" y1="54" x2="46" y2="54" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <path d="M18 10 L46 10 L32 32 Z" fill="#2563EB" opacity="0.15"/>
+              <path d="M32 32 L22 54 L42 54 Z" fill="#2563EB"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Light</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── CARD 2: Compress ─── -->
+    <article class="card">
+      <div class="card-index">02 &nbsp;/&nbsp; 06</div>
+      <h2 class="card-title">Compress</h2>
+      <p class="card-desc">Two inward chevrons squeezing three tapered lines. Hours of video content pressed down to the essential signal.</p>
+      <div class="swatches">
+        <div class="swatch dark">
+          <div class="swatch-sizes">
+            <!-- 64px -->
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Compress logo 64px">
+              <!-- top chevron pointing down -->
+              <polyline points="14,12 32,22 50,12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <!-- 3 compressed lines — widest at top, narrowest at center -->
+              <line x1="19" y1="27" x2="45" y2="27" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+              <line x1="22" y1="32" x2="42" y2="32" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+              <line x1="26" y1="37" x2="38" y2="37" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="1"/>
+              <!-- bottom chevron pointing up -->
+              <polyline points="14,52 32,42 50,52" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="14,12 32,22 50,12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="19" y1="27" x2="45" y2="27" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+              <line x1="22" y1="32" x2="42" y2="32" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+              <line x1="26" y1="37" x2="38" y2="37" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="1"/>
+              <polyline points="14,52 32,42 50,52" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="14,13 32,23 50,13" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="20" y1="29" x2="44" y2="29" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+              <line x1="26" y1="35" x2="38" y2="35" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <polyline points="14,51 32,41 50,51" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Dark</span>
+        </div>
+        <div class="swatch light">
+          <div class="swatch-sizes">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="14,12 32,22 50,12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="19" y1="27" x2="45" y2="27" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+              <line x1="22" y1="32" x2="42" y2="32" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+              <line x1="26" y1="37" x2="38" y2="37" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="1"/>
+              <polyline points="14,52 32,42 50,52" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="14,12 32,22 50,12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="19" y1="27" x2="45" y2="27" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+              <line x1="22" y1="32" x2="42" y2="32" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+              <line x1="26" y1="37" x2="38" y2="37" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="1"/>
+              <polyline points="14,52 32,42 50,52" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="14,13 32,23 50,13" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="20" y1="29" x2="44" y2="29" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+              <line x1="26" y1="35" x2="38" y2="35" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <polyline points="14,51 32,41 50,51" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Light</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── CARD 3: Speed Clock ─── -->
+    <article class="card">
+      <div class="card-index">03 &nbsp;/&nbsp; 06</div>
+      <h2 class="card-title">Speed Clock</h2>
+      <p class="card-desc">A clean circle with a single bold hand and a motion arc — the feeling of a clock moving faster than it should.</p>
+      <div class="swatches">
+        <div class="swatch dark">
+          <div class="swatch-sizes">
+            <!-- 64px -->
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Speed Clock logo 64px">
+              <!-- clock circle -->
+              <circle cx="32" cy="32" r="20" stroke="#2563EB" stroke-width="2.5"/>
+              <!-- motion trail arc (behind the hand, sweeping from ~270° to 45°) -->
+              <!-- arc from ~220deg to ~340deg as a swoosh outside -->
+              <path d="M 17.5 42 A 17 17 0 0 1 47.5 22" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+              <path d="M 19 44.5 A 20 20 0 0 1 49 19.5" stroke="#2563EB" stroke-width="1" stroke-linecap="round" opacity="0.15"/>
+              <!-- clock hand pointing to ~1 o'clock (fast position) -->
+              <!-- center dot -->
+              <circle cx="32" cy="32" r="2.5" fill="#2563EB"/>
+              <!-- hand: from center toward upper-right -->
+              <line x1="32" y1="32" x2="43" y2="19" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- short minute indicator -->
+              <line x1="32" y1="32" x2="32" y2="23" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="#2563EB" stroke-width="2.5"/>
+              <path d="M 17.5 42 A 17 17 0 0 1 47.5 22" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+              <circle cx="32" cy="32" r="2.5" fill="#2563EB"/>
+              <line x1="32" y1="32" x2="43" y2="19" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="32" y1="32" x2="32" y2="23" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="#2563EB" stroke-width="3"/>
+              <circle cx="32" cy="32" r="3" fill="#2563EB"/>
+              <line x1="32" y1="32" x2="43" y2="19" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Dark</span>
+        </div>
+        <div class="swatch light">
+          <div class="swatch-sizes">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="#2563EB" stroke-width="2.5"/>
+              <path d="M 17.5 42 A 17 17 0 0 1 47.5 22" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.25"/>
+              <path d="M 19 44.5 A 20 20 0 0 1 49 19.5" stroke="#2563EB" stroke-width="1" stroke-linecap="round" opacity="0.1"/>
+              <circle cx="32" cy="32" r="2.5" fill="#2563EB"/>
+              <line x1="32" y1="32" x2="43" y2="19" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="32" y1="32" x2="32" y2="23" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="#2563EB" stroke-width="2.5"/>
+              <path d="M 17.5 42 A 17 17 0 0 1 47.5 22" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.25"/>
+              <circle cx="32" cy="32" r="2.5" fill="#2563EB"/>
+              <line x1="32" y1="32" x2="43" y2="19" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="32" y1="32" x2="32" y2="23" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="#2563EB" stroke-width="3"/>
+              <circle cx="32" cy="32" r="3" fill="#2563EB"/>
+              <line x1="32" y1="32" x2="43" y2="19" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Light</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── CARD 4: B-Hourglass ─── -->
+    <article class="card">
+      <div class="card-index">04 &nbsp;/&nbsp; 06</div>
+      <h2 class="card-title">B-Hourglass</h2>
+      <p class="card-desc">The letter B drawn so its negative space reads as an hourglass — brand identity fused with the core time-saving metaphor.</p>
+      <div class="swatches">
+        <div class="swatch dark">
+          <div class="swatch-sizes">
+            <!-- 64px -->
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="B-Hourglass logo 64px">
+              <!--
+                The B:
+                - Vertical stem on the left
+                - Top bump: semicircle from (18,12) to (18,32) via bulge at x~42
+                - Bottom bump: semicircle from (18,32) to (18,52) via larger bulge at x~46
+                The negative space between the bumps and the stem = hourglass shape
+                We draw this as a filled path with a cutout (using SVG even-odd or explicit paths)
+              -->
+              <!-- Outer B filled shape -->
+              <path
+                d="
+                  M 16 12
+                  L 16 52
+                  L 30 52
+                  C 44 52 50 46 50 39
+                  C 50 34.5 47 31 42 30
+                  C 47 29 50 25.5 50 21
+                  C 50 14 44 12 30 12
+                  Z
+                "
+                fill="#2563EB"
+              />
+              <!-- Top bump cutout (hourglass top half) -->
+              <path
+                d="
+                  M 22 16
+                  L 22 28
+                  L 29 28
+                  C 37 28 42 25 42 22
+                  C 42 18.5 38 16 30 16
+                  Z
+                "
+                fill="#0f172a"
+              />
+              <!-- Bottom bump cutout (hourglass bottom half) -->
+              <path
+                d="
+                  M 22 36
+                  L 22 48
+                  L 31 48
+                  C 40 48 46 45 46 41
+                  C 46 37.5 41 35 32 35
+                  L 22 36
+                  Z
+                "
+                fill="#0f172a"
+              />
+              <!-- The two cutouts together read as an hourglass negative space -->
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 16 12 L 16 52 L 30 52 C 44 52 50 46 50 39 C 50 34.5 47 31 42 30 C 47 29 50 25.5 50 21 C 50 14 44 12 30 12 Z" fill="#2563EB"/>
+              <path d="M 22 16 L 22 28 L 29 28 C 37 28 42 25 42 22 C 42 18.5 38 16 30 16 Z" fill="#0f172a"/>
+              <path d="M 22 36 L 22 48 L 31 48 C 40 48 46 45 46 41 C 46 37.5 41 35 32 35 L 22 36 Z" fill="#0f172a"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 16 12 L 16 52 L 30 52 C 44 52 50 46 50 39 C 50 34.5 47 31 42 30 C 47 29 50 25.5 50 21 C 50 14 44 12 30 12 Z" fill="#2563EB"/>
+              <path d="M 22 16 L 22 28 L 29 28 C 37 28 42 25 42 22 C 42 18.5 38 16 30 16 Z" fill="#0f172a"/>
+              <path d="M 22 36 L 22 48 L 31 48 C 40 48 46 45 46 41 C 46 37.5 41 35 32 35 L 22 36 Z" fill="#0f172a"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Dark</span>
+        </div>
+        <div class="swatch light">
+          <div class="swatch-sizes">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 16 12 L 16 52 L 30 52 C 44 52 50 46 50 39 C 50 34.5 47 31 42 30 C 47 29 50 25.5 50 21 C 50 14 44 12 30 12 Z" fill="#2563EB"/>
+              <path d="M 22 16 L 22 28 L 29 28 C 37 28 42 25 42 22 C 42 18.5 38 16 30 16 Z" fill="#f1f5f9"/>
+              <path d="M 22 36 L 22 48 L 31 48 C 40 48 46 45 46 41 C 46 37.5 41 35 32 35 L 22 36 Z" fill="#f1f5f9"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 16 12 L 16 52 L 30 52 C 44 52 50 46 50 39 C 50 34.5 47 31 42 30 C 47 29 50 25.5 50 21 C 50 14 44 12 30 12 Z" fill="#2563EB"/>
+              <path d="M 22 16 L 22 28 L 29 28 C 37 28 42 25 42 22 C 42 18.5 38 16 30 16 Z" fill="#f1f5f9"/>
+              <path d="M 22 36 L 22 48 L 31 48 C 40 48 46 45 46 41 C 46 37.5 41 35 32 35 L 22 36 Z" fill="#f1f5f9"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 16 12 L 16 52 L 30 52 C 44 52 50 46 50 39 C 50 34.5 47 31 42 30 C 47 29 50 25.5 50 21 C 50 14 44 12 30 12 Z" fill="#2563EB"/>
+              <path d="M 22 16 L 22 28 L 29 28 C 37 28 42 25 42 22 C 42 18.5 38 16 30 16 Z" fill="#f1f5f9"/>
+              <path d="M 22 36 L 22 48 L 31 48 C 40 48 46 45 46 41 C 46 37.5 41 35 32 35 L 22 36 Z" fill="#f1f5f9"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Light</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── CARD 5: Fast Reader ─── -->
+    <article class="card">
+      <div class="card-index">05 &nbsp;/&nbsp; 06</div>
+      <h2 class="card-title">Fast Reader</h2>
+      <p class="card-desc">Three lines tapering to a point — text as a shape, reading as direction. A caret anchors the eye at the focal conclusion.</p>
+      <div class="swatches">
+        <div class="swatch dark">
+          <div class="swatch-sizes">
+            <!-- 64px -->
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Fast Reader logo 64px">
+              <!-- 3 lines: widest top, narrowest bottom, right-aligned, pointing down-left -->
+              <!-- Full width top line -->
+              <line x1="16" y1="22" x2="48" y2="22" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <!-- Medium middle line -->
+              <line x1="16" y1="32" x2="40" y2="32" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+              <!-- Short bottom line -->
+              <line x1="16" y1="42" x2="28" y2="42" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+              <!-- Caret / cursor at the implied triangle tip -->
+              <!-- Caret pointing right at (28,42) area — scanning position -->
+              <polyline points="32,46 37,50 32,54" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="16" y1="22" x2="48" y2="22" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <line x1="16" y1="32" x2="40" y2="32" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+              <line x1="16" y1="42" x2="28" y2="42" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+              <polyline points="32,46 37,50 32,54" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="14" y1="20" x2="50" y2="20" stroke="#2563EB" stroke-width="4" stroke-linecap="round"/>
+              <line x1="14" y1="32" x2="40" y2="32" stroke="#2563EB" stroke-width="4" stroke-linecap="round" opacity="0.65"/>
+              <line x1="14" y1="44" x2="26" y2="44" stroke="#2563EB" stroke-width="4" stroke-linecap="round" opacity="0.35"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Dark</span>
+        </div>
+        <div class="swatch light">
+          <div class="swatch-sizes">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="16" y1="22" x2="48" y2="22" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <line x1="16" y1="32" x2="40" y2="32" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+              <line x1="16" y1="42" x2="28" y2="42" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+              <polyline points="32,46 37,50 32,54" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="16" y1="22" x2="48" y2="22" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+              <line x1="16" y1="32" x2="40" y2="32" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+              <line x1="16" y1="42" x2="28" y2="42" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+              <polyline points="32,46 37,50 32,54" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="14" y1="20" x2="50" y2="20" stroke="#2563EB" stroke-width="4" stroke-linecap="round"/>
+              <line x1="14" y1="32" x2="40" y2="32" stroke="#2563EB" stroke-width="4" stroke-linecap="round" opacity="0.65"/>
+              <line x1="14" y1="44" x2="26" y2="44" stroke="#2563EB" stroke-width="4" stroke-linecap="round" opacity="0.35"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Light</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── CARD 6: Portal ─── -->
+    <article class="card">
+      <div class="card-index">06 &nbsp;/&nbsp; 06</div>
+      <h2 class="card-title">Portal</h2>
+      <p class="card-desc">A screen-shaped rectangle with a concentric ring void — video content entering a portal and emerging as concentrated insight.</p>
+      <div class="swatches">
+        <div class="swatch dark">
+          <div class="swatch-sizes">
+            <!-- 64px -->
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Portal logo 64px">
+              <!-- outer rounded rectangle — screen/video shape, 16:10 ish -->
+              <rect x="8" y="14" width="48" height="36" rx="6" stroke="#2563EB" stroke-width="2.5" fill="none"/>
+              <!-- outer ring of the portal -->
+              <circle cx="32" cy="32" r="11" stroke="#2563EB" stroke-width="2" fill="none"/>
+              <!-- inner filled circle — the condensed output -->
+              <circle cx="32" cy="32" r="5" fill="#2563EB"/>
+              <!-- four tiny tick marks at 12/3/6/9 o'clock on the ring -->
+              <line x1="32" y1="17" x2="32" y2="20" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="32" y1="44" x2="32" y2="47" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="17" y1="32" x2="20" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="44" y1="32" x2="47" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="14" width="48" height="36" rx="6" stroke="#2563EB" stroke-width="2.5" fill="none"/>
+              <circle cx="32" cy="32" r="11" stroke="#2563EB" stroke-width="2" fill="none"/>
+              <circle cx="32" cy="32" r="5" fill="#2563EB"/>
+              <line x1="32" y1="17" x2="32" y2="20" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="32" y1="44" x2="32" y2="47" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="17" y1="32" x2="20" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="44" y1="32" x2="47" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="14" width="48" height="36" rx="6" stroke="#2563EB" stroke-width="3" fill="none"/>
+              <circle cx="32" cy="32" r="11" stroke="#2563EB" stroke-width="2.5" fill="none"/>
+              <circle cx="32" cy="32" r="5" fill="#2563EB"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Dark</span>
+        </div>
+        <div class="swatch light">
+          <div class="swatch-sizes">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="14" width="48" height="36" rx="6" stroke="#2563EB" stroke-width="2.5" fill="none"/>
+              <circle cx="32" cy="32" r="11" stroke="#2563EB" stroke-width="2" fill="none"/>
+              <circle cx="32" cy="32" r="5" fill="#2563EB"/>
+              <line x1="32" y1="17" x2="32" y2="20" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="32" y1="44" x2="32" y2="47" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="17" y1="32" x2="20" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="44" y1="32" x2="47" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+            </svg>
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="14" width="48" height="36" rx="6" stroke="#2563EB" stroke-width="2.5" fill="none"/>
+              <circle cx="32" cy="32" r="11" stroke="#2563EB" stroke-width="2" fill="none"/>
+              <circle cx="32" cy="32" r="5" fill="#2563EB"/>
+              <line x1="32" y1="17" x2="32" y2="20" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="32" y1="44" x2="32" y2="47" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="17" y1="32" x2="20" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="44" y1="32" x2="47" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="14" width="48" height="36" rx="6" stroke="#2563EB" stroke-width="3" fill="none"/>
+              <circle cx="32" cy="32" r="11" stroke="#2563EB" stroke-width="2.5" fill="none"/>
+              <circle cx="32" cy="32" r="5" fill="#2563EB"/>
+            </svg>
+          </div>
+          <span class="swatch-label">Light</span>
+        </div>
+      </div>
+    </article>
+
+  </div><!-- /cards-grid -->
+
+  <!-- ══════════════ COMPARISON BAR ══════════════ -->
+  <div class="section-sep"></div>
+
+  <div class="comparison">
+    <div class="comparison-inner">
+      <div class="comparison-title">Side-by-side at 32px</div>
+      <div class="comparison-row">
+
+        <div class="comparison-item">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="18" y1="10" x2="46" y2="10" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="18" y1="54" x2="46" y2="54" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M18 10 L46 10 L32 32 Z" fill="#2563EB" opacity="0.15"/>
+            <path d="M18 10 L46 10 L32 32 Z" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+            <path d="M32 32 L22 54 L42 54 Z" fill="#2563EB" opacity="0.9"/>
+            <circle cx="32" cy="32" r="1.5" fill="#93c5fd"/>
+          </svg>
+          <span class="comparison-name">Hourglass</span>
+        </div>
+
+        <div class="comparison-item">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="14,12 32,22 50,12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <line x1="19" y1="27" x2="45" y2="27" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+            <line x1="22" y1="32" x2="42" y2="32" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+            <line x1="26" y1="37" x2="38" y2="37" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+            <polyline points="14,52 32,42 50,52" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <span class="comparison-name">Compress</span>
+        </div>
+
+        <div class="comparison-item">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="32" r="20" stroke="#2563EB" stroke-width="2.5"/>
+            <path d="M 17.5 42 A 17 17 0 0 1 47.5 22" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+            <circle cx="32" cy="32" r="2.5" fill="#2563EB"/>
+            <line x1="32" y1="32" x2="43" y2="19" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="32" y1="32" x2="32" y2="23" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+          <span class="comparison-name">Speed Clock</span>
+        </div>
+
+        <div class="comparison-item">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 16 12 L 16 52 L 30 52 C 44 52 50 46 50 39 C 50 34.5 47 31 42 30 C 47 29 50 25.5 50 21 C 50 14 44 12 30 12 Z" fill="#2563EB"/>
+            <path d="M 22 16 L 22 28 L 29 28 C 37 28 42 25 42 22 C 42 18.5 38 16 30 16 Z" fill="#0f172a"/>
+            <path d="M 22 36 L 22 48 L 31 48 C 40 48 46 45 46 41 C 46 37.5 41 35 32 35 L 22 36 Z" fill="#0f172a"/>
+          </svg>
+          <span class="comparison-name">B-Hourglass</span>
+        </div>
+
+        <div class="comparison-item">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="16" y1="22" x2="48" y2="22" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+            <line x1="16" y1="32" x2="40" y2="32" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+            <line x1="16" y1="42" x2="28" y2="42" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+            <polyline points="32,46 37,50 32,54" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <span class="comparison-name">Fast Reader</span>
+        </div>
+
+        <div class="comparison-item">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="14" width="48" height="36" rx="6" stroke="#2563EB" stroke-width="2.5" fill="none"/>
+            <circle cx="32" cy="32" r="11" stroke="#2563EB" stroke-width="2" fill="none"/>
+            <circle cx="32" cy="32" r="5" fill="#2563EB"/>
+            <line x1="32" y1="17" x2="32" y2="20" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            <line x1="32" y1="44" x2="32" y2="47" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            <line x1="17" y1="32" x2="20" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            <line x1="44" y1="32" x2="47" y2="32" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+          <span class="comparison-name">Portal</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="footer">
+    <strong>Brevora</strong> &nbsp;&mdash;&nbsp; Brand Identity &nbsp;&middot;&nbsp; Logo Concepts v3 &nbsp;&middot;&nbsp; March 2026
+  </footer>
+
+</div><!-- /page-wrap -->
+</body>
+</html>

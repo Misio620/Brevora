@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brevora Logo Concepts</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 48px 32px;
+      min-height: 100vh;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: 0 auto 48px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 15px;
+      color: #64748b;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .bg-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .bg-row-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .swatch {
+      border-radius: 8px;
+      padding: 16px 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .swatch.white { background: #ffffff; border: 1px solid #e2e8f0; }
+    .swatch.dark  { background: #1e293b; }
+
+    .size-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .size-slot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .size-slot svg { display: block; }
+
+    .size-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 6px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #f1f5f9;
+      margin: 16px 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Brevora — Logo Concepts</h1>
+  <p>AI-powered video digest tool &middot; 4 directions &middot; shown at 64px, 32px, 16px on white and dark backgrounds</p>
+</header>
+
+<div class="grid">
+
+  <!-- =========================================================
+       CONCEPT A — Fast Forward Summary
+  ========================================================== -->
+  <div class="card">
+    <div class="card-label">Concept A</div>
+    <div class="card-title">Fast Forward Summary</div>
+    <div class="card-desc">Play triangle + forward arrows. "Quickly get the point."</div>
+
+    <div class="bg-section">
+      <div>
+        <div class="bg-row-label">White</div>
+        <div class="swatch white">
+          <!-- 64px -->
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Play triangle, left-aligned -->
+              <polygon points="10,16 10,48 30,32" fill="#2563EB"/>
+              <!-- Double chevron >> -->
+              <polygon points="32,20 32,44 46,32" fill="#2563EB"/>
+              <polygon points="44,20 44,44 58,32" fill="#2563EB" opacity="0.45"/>
+            </svg>
+          </div>
+          <!-- 32px -->
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,16 10,48 30,32" fill="#2563EB"/>
+              <polygon points="32,20 32,44 46,32" fill="#2563EB"/>
+              <polygon points="44,20 44,44 58,32" fill="#2563EB" opacity="0.45"/>
+            </svg>
+          </div>
+          <!-- 16px -->
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,16 10,48 30,32" fill="#2563EB"/>
+              <polygon points="32,20 32,44 46,32" fill="#2563EB"/>
+              <polygon points="44,20 44,44 58,32" fill="#2563EB" opacity="0.45"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="bg-row-label">Dark</div>
+        <div class="swatch dark">
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,16 10,48 30,32" fill="#ffffff"/>
+              <polygon points="32,20 32,44 46,32" fill="#ffffff"/>
+              <polygon points="44,20 44,44 58,32" fill="#ffffff" opacity="0.45"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,16 10,48 30,32" fill="#ffffff"/>
+              <polygon points="32,20 32,44 46,32" fill="#ffffff"/>
+              <polygon points="44,20 44,44 58,32" fill="#ffffff" opacity="0.45"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,16 10,48 30,32" fill="#ffffff"/>
+              <polygon points="32,20 32,44 46,32" fill="#ffffff"/>
+              <polygon points="44,20 44,44 58,32" fill="#ffffff" opacity="0.45"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       CONCEPT B — Page + Play
+  ========================================================== -->
+  <div class="card">
+    <div class="card-label">Concept B</div>
+    <div class="card-title">Page + Play</div>
+    <div class="card-desc">Document page with a play triangle cut in. "Videos become notes."</div>
+
+    <div class="bg-section">
+      <div>
+        <div class="bg-row-label">White</div>
+        <div class="swatch white">
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Page body with folded top-right corner -->
+              <path d="M10 8 H42 L54 20 V56 H10 Z" fill="#2563EB"/>
+              <!-- Fold triangle cutout -->
+              <path d="M42 8 L54 20 H42 Z" fill="#1d4ed8"/>
+              <!-- Play triangle (white, centered in lower portion) -->
+              <polygon points="24,28 24,46 40,37" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 8 H42 L54 20 V56 H10 Z" fill="#2563EB"/>
+              <path d="M42 8 L54 20 H42 Z" fill="#1d4ed8"/>
+              <polygon points="24,28 24,46 40,37" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 8 H42 L54 20 V56 H10 Z" fill="#2563EB"/>
+              <path d="M42 8 L54 20 H42 Z" fill="#1d4ed8"/>
+              <polygon points="24,28 24,46 40,37" fill="#ffffff"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="bg-row-label">Dark</div>
+        <div class="swatch dark">
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 8 H42 L54 20 V56 H10 Z" fill="#ffffff"/>
+              <path d="M42 8 L54 20 H42 Z" fill="#cbd5e1"/>
+              <polygon points="24,28 24,46 40,37" fill="#1e293b"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 8 H42 L54 20 V56 H10 Z" fill="#ffffff"/>
+              <path d="M42 8 L54 20 H42 Z" fill="#cbd5e1"/>
+              <polygon points="24,28 24,46 40,37" fill="#1e293b"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 8 H42 L54 20 V56 H10 Z" fill="#ffffff"/>
+              <path d="M42 8 L54 20 H42 Z" fill="#cbd5e1"/>
+              <polygon points="24,28 24,46 40,37" fill="#1e293b"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       CONCEPT C — Abstract B (lines forming B shape)
+  ========================================================== -->
+  <div class="card">
+    <div class="card-label">Concept C</div>
+    <div class="card-title">Abstract B</div>
+    <div class="card-desc">Horizontal lines arranged to form the letter B — a summary list as a lettermark.</div>
+
+    <div class="bg-section">
+      <div>
+        <div class="bg-row-label">White</div>
+        <div class="swatch white">
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Vertical left stem -->
+              <rect x="10" y="8" width="7" height="48" rx="2" fill="#2563EB"/>
+              <!-- Top cap -->
+              <rect x="17" y="8" width="18" height="7" rx="2" fill="#2563EB"/>
+              <!-- Upper bump curve (top-right arc) -->
+              <rect x="17" y="28" width="20" height="7" rx="2" fill="#2563EB"/>
+              <!-- Upper bump right vertical -->
+              <rect x="35" y="15" width="7" height="13" rx="2" fill="#2563EB"/>
+              <!-- Middle bar -->
+              <!-- Lower bump right vertical -->
+              <rect x="37" y="35" width="7" height="14" rx="2" fill="#2563EB"/>
+              <!-- Bottom cap -->
+              <rect x="17" y="49" width="20" height="7" rx="2" fill="#2563EB"/>
+              <!-- Shorter middle-right for lower belly -->
+              <rect x="17" y="28" width="20" height="7" rx="2" fill="#2563EB"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="8" width="7" height="48" rx="2" fill="#2563EB"/>
+              <rect x="17" y="8" width="18" height="7" rx="2" fill="#2563EB"/>
+              <rect x="17" y="28" width="20" height="7" rx="2" fill="#2563EB"/>
+              <rect x="35" y="15" width="7" height="13" rx="2" fill="#2563EB"/>
+              <rect x="37" y="35" width="7" height="14" rx="2" fill="#2563EB"/>
+              <rect x="17" y="49" width="20" height="7" rx="2" fill="#2563EB"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="8" width="7" height="48" rx="2" fill="#2563EB"/>
+              <rect x="17" y="8" width="18" height="7" rx="2" fill="#2563EB"/>
+              <rect x="17" y="28" width="20" height="7" rx="2" fill="#2563EB"/>
+              <rect x="35" y="15" width="7" height="13" rx="2" fill="#2563EB"/>
+              <rect x="37" y="35" width="7" height="14" rx="2" fill="#2563EB"/>
+              <rect x="17" y="49" width="20" height="7" rx="2" fill="#2563EB"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="bg-row-label">Dark</div>
+        <div class="swatch dark">
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="8" width="7" height="48" rx="2" fill="#ffffff"/>
+              <rect x="17" y="8" width="18" height="7" rx="2" fill="#ffffff"/>
+              <rect x="17" y="28" width="20" height="7" rx="2" fill="#ffffff"/>
+              <rect x="35" y="15" width="7" height="13" rx="2" fill="#ffffff"/>
+              <rect x="37" y="35" width="7" height="14" rx="2" fill="#ffffff"/>
+              <rect x="17" y="49" width="20" height="7" rx="2" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="8" width="7" height="48" rx="2" fill="#ffffff"/>
+              <rect x="17" y="8" width="18" height="7" rx="2" fill="#ffffff"/>
+              <rect x="17" y="28" width="20" height="7" rx="2" fill="#ffffff"/>
+              <rect x="35" y="15" width="7" height="13" rx="2" fill="#ffffff"/>
+              <rect x="37" y="35" width="7" height="14" rx="2" fill="#ffffff"/>
+              <rect x="17" y="49" width="20" height="7" rx="2" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="8" width="7" height="48" rx="2" fill="#ffffff"/>
+              <rect x="17" y="8" width="18" height="7" rx="2" fill="#ffffff"/>
+              <rect x="17" y="28" width="20" height="7" rx="2" fill="#ffffff"/>
+              <rect x="35" y="15" width="7" height="13" rx="2" fill="#ffffff"/>
+              <rect x="37" y="35" width="7" height="14" rx="2" fill="#ffffff"/>
+              <rect x="17" y="49" width="20" height="7" rx="2" fill="#ffffff"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       CONCEPT D — Lightning + Play
+  ========================================================== -->
+  <div class="card">
+    <div class="card-label">Concept D</div>
+    <div class="card-title">Lightning + Play</div>
+    <div class="card-desc">Lightning bolt with a play triangle integrated at its base. Speed + video.</div>
+
+    <div class="bg-section">
+      <div>
+        <div class="bg-row-label">White</div>
+        <div class="swatch white">
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!--
+                Lightning bolt: top-right diagonal to midpoint, then sharp left,
+                then bottom-right diagonal — forms classic bolt.
+                The lower half doubles as a play triangle pointing right.
+              -->
+              <!-- Main bolt shape -->
+              <path d="M38 4 L18 34 H30 L26 60 L54 26 H40 Z" fill="#2563EB"/>
+              <!-- Subtle play highlight overlay at the lower belly of the bolt -->
+              <polygon points="30,34 30,52 44,43" fill="#1d4ed8" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38 4 L18 34 H30 L26 60 L54 26 H40 Z" fill="#2563EB"/>
+              <polygon points="30,34 30,52 44,43" fill="#1d4ed8" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38 4 L18 34 H30 L26 60 L54 26 H40 Z" fill="#2563EB"/>
+              <polygon points="30,34 30,52 44,43" fill="#1d4ed8" opacity="0.6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="bg-row-label">Dark</div>
+        <div class="swatch dark">
+          <div class="size-slot" style="width:64px;height:64px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38 4 L18 34 H30 L26 60 L54 26 H40 Z" fill="#ffffff"/>
+              <polygon points="30,34 30,52 44,43" fill="#94a3b8" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:32px;height:32px;">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38 4 L18 34 H30 L26 60 L54 26 H40 Z" fill="#ffffff"/>
+              <polygon points="30,34 30,52 44,43" fill="#94a3b8" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="size-slot" style="width:16px;height:16px;">
+            <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38 4 L18 34 H30 L26 60 L54 26 H40 Z" fill="#ffffff"/>
+              <polygon points="30,34 30,52 44,43" fill="#94a3b8" opacity="0.7"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Size legend -->
+<div style="max-width:1100px;margin:32px auto 0;display:flex;align-items:center;gap:32px;">
+  <span style="font-size:12px;color:#94a3b8;font-weight:500;">Size reference:</span>
+  <span style="font-size:12px;color:#64748b;">64px &nbsp;&middot;&nbsp; 32px &nbsp;&middot;&nbsp; 16px (left to right in each swatch)</span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brevora Logo Concepts v2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 48px 24px 80px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #0f172a;
+    }
+
+    .page-header p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 28px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card-header {
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 16px;
+    }
+
+    .concept-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #2563eb;
+      margin-bottom: 4px;
+    }
+
+    .concept-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .concept-desc {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .swatch-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .swatch-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: #94a3b8;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+
+    .swatch-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .swatch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .swatch.light {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+    }
+
+    .swatch.dark {
+      background: #1e293b;
+    }
+
+    /* Size helpers */
+    .s-64 { width: 64px; height: 64px; }
+    .s-40 { width: 40px; height: 40px; }
+    .s-24 { width: 24px; height: 24px; }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <h1>Brevora Logo Concepts v2</h1>
+    <p>brevis (brief) + ora (time)</p>
+  </header>
+
+  <div class="cards">
+
+    <!-- ============================================================
+         CONCEPT A — Hourglass
+    ============================================================ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="concept-label">Concept A</div>
+        <div class="concept-name">Hourglass</div>
+        <div class="concept-desc">Two triangles meeting at a narrow neck. Sand fill at the bottom suggests time running — and saved.</div>
+      </div>
+
+      <div class="swatch-group">
+        <div class="swatch-label">Light background</div>
+        <div class="swatch-row">
+          <!-- 64px -->
+          <div class="swatch light s-64">
+            <svg width="36" height="44" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Top rim -->
+              <rect x="2" y="2" width="32" height="3.5" rx="1.75" fill="#2563EB"/>
+              <!-- Top triangle -->
+              <path d="M4 5.5 L32 5.5 L20 22 L16 22 Z" fill="#2563EB"/>
+              <!-- Neck gap is implied by the triangles meeting -->
+              <!-- Bottom triangle -->
+              <path d="M16 22 L20 22 L32 38.5 L4 38.5 Z" fill="#2563EB" opacity="0.25"/>
+              <!-- Sand fill bottom -->
+              <path d="M9.5 33 L26.5 38.5 L4 38.5 Z" fill="#2563EB"/>
+              <!-- Bottom rim -->
+              <rect x="2" y="38.5" width="32" height="3.5" rx="1.75" fill="#2563EB"/>
+            </svg>
+          </div>
+          <!-- 40px -->
+          <div class="swatch light s-40">
+            <svg width="22" height="28" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="32" height="3.5" rx="1.75" fill="#2563EB"/>
+              <path d="M4 5.5 L32 5.5 L20 22 L16 22 Z" fill="#2563EB"/>
+              <path d="M16 22 L20 22 L32 38.5 L4 38.5 Z" fill="#2563EB" opacity="0.25"/>
+              <path d="M9.5 33 L26.5 38.5 L4 38.5 Z" fill="#2563EB"/>
+              <rect x="2" y="38.5" width="32" height="3.5" rx="1.75" fill="#2563EB"/>
+            </svg>
+          </div>
+          <!-- 24px -->
+          <div class="swatch light s-24">
+            <svg width="13" height="17" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="32" height="3.5" rx="1.75" fill="#2563EB"/>
+              <path d="M4 5.5 L32 5.5 L20 22 L16 22 Z" fill="#2563EB"/>
+              <path d="M16 22 L20 22 L32 38.5 L4 38.5 Z" fill="#2563EB" opacity="0.25"/>
+              <path d="M9.5 33 L26.5 38.5 L4 38.5 Z" fill="#2563EB"/>
+              <rect x="2" y="38.5" width="32" height="3.5" rx="1.75" fill="#2563EB"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="swatch-label" style="margin-top:4px">Dark background</div>
+        <div class="swatch-row">
+          <div class="swatch dark s-64">
+            <svg width="36" height="44" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="32" height="3.5" rx="1.75" fill="#FFFFFF"/>
+              <path d="M4 5.5 L32 5.5 L20 22 L16 22 Z" fill="#FFFFFF"/>
+              <path d="M16 22 L20 22 L32 38.5 L4 38.5 Z" fill="#FFFFFF" opacity="0.3"/>
+              <path d="M9.5 33 L26.5 38.5 L4 38.5 Z" fill="#FFFFFF"/>
+              <rect x="2" y="38.5" width="32" height="3.5" rx="1.75" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="swatch dark s-40">
+            <svg width="22" height="28" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="32" height="3.5" rx="1.75" fill="#FFFFFF"/>
+              <path d="M4 5.5 L32 5.5 L20 22 L16 22 Z" fill="#FFFFFF"/>
+              <path d="M16 22 L20 22 L32 38.5 L4 38.5 Z" fill="#FFFFFF" opacity="0.3"/>
+              <path d="M9.5 33 L26.5 38.5 L4 38.5 Z" fill="#FFFFFF"/>
+              <rect x="2" y="38.5" width="32" height="3.5" rx="1.75" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="swatch dark s-24">
+            <svg width="13" height="17" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="32" height="3.5" rx="1.75" fill="#FFFFFF"/>
+              <path d="M4 5.5 L32 5.5 L20 22 L16 22 Z" fill="#FFFFFF"/>
+              <path d="M16 22 L20 22 L32 38.5 L4 38.5 Z" fill="#FFFFFF" opacity="0.3"/>
+              <path d="M9.5 33 L26.5 38.5 L4 38.5 Z" fill="#FFFFFF"/>
+              <rect x="2" y="38.5" width="32" height="3.5" rx="1.75" fill="#FFFFFF"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CONCEPT B — Compress
+    ============================================================ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="concept-label">Concept B</div>
+        <div class="concept-name">Compress</div>
+        <div class="concept-desc">Chevrons push inward from top and bottom, squeezing 3 content lines into a condensed essence.</div>
+      </div>
+
+      <div class="swatch-group">
+        <div class="swatch-label">Light background</div>
+        <div class="swatch-row">
+          <!-- 64px -->
+          <div class="swatch light s-64">
+            <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Top chevron pointing down -->
+              <path d="M4 4 L18 13 L32 4" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <!-- 3 horizontal lines -->
+              <line x1="8" y1="18" x2="28" y2="18" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="10" y1="23" x2="26" y2="23" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="12" y1="28" x2="24" y2="28" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Bottom chevron pointing up -->
+              <path d="M4 36 L18 27 L32 36" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <!-- 40px -->
+          <div class="swatch light s-40">
+            <svg width="22" height="25" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4 L18 13 L32 4" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="8" y1="18" x2="28" y2="18" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="10" y1="23" x2="26" y2="23" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="12" y1="28" x2="24" y2="28" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M4 36 L18 27 L32 36" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <!-- 24px -->
+          <div class="swatch light s-24">
+            <svg width="13" height="15" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4 L18 13 L32 4" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="8" y1="18" x2="28" y2="18" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="10" y1="23" x2="26" y2="23" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="12" y1="28" x2="24" y2="28" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M4 36 L18 27 L32 36" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="swatch-label" style="margin-top:4px">Dark background</div>
+        <div class="swatch-row">
+          <div class="swatch dark s-64">
+            <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4 L18 13 L32 4" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="8" y1="18" x2="28" y2="18" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="10" y1="23" x2="26" y2="23" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="12" y1="28" x2="24" y2="28" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M4 36 L18 27 L32 36" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="swatch dark s-40">
+            <svg width="22" height="25" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4 L18 13 L32 4" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="8" y1="18" x2="28" y2="18" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="10" y1="23" x2="26" y2="23" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="12" y1="28" x2="24" y2="28" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M4 36 L18 27 L32 36" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="swatch dark s-24">
+            <svg width="13" height="15" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4 L18 13 L32 4" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="8" y1="18" x2="28" y2="18" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="10" y1="23" x2="26" y2="23" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="12" y1="28" x2="24" y2="28" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M4 36 L18 27 L32 36" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CONCEPT C — Speed Clock
+    ============================================================ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="concept-label">Concept C</div>
+        <div class="concept-name">Speed Clock</div>
+        <div class="concept-desc">A minimal clock face with a hand at ~2 o'clock and a curved speed trail. Time moving fast.</div>
+      </div>
+
+      <div class="swatch-group">
+        <div class="swatch-label">Light background</div>
+        <div class="swatch-row">
+          <!-- 64px -->
+          <div class="swatch light s-64">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Clock circle -->
+              <circle cx="20" cy="20" r="17" stroke="#2563EB" stroke-width="2.5"/>
+              <!-- Speed swoosh trail: arc from ~8 o'clock to ~2 o'clock behind the hand -->
+              <path d="M8.5 27 Q5 20 9 13.5" stroke="#2563EB" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.35"/>
+              <path d="M7 29.5 Q2.5 20 7.5 11" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.2"/>
+              <!-- Hour hand pointing to ~2 o'clock (60deg from top = x+sin60, y-cos60) -->
+              <!-- Center (20,20), tip at ~2 o'clock: angle=60deg, length=10 -->
+              <line x1="20" y1="20" x2="28.66" y2="15" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Center dot -->
+              <circle cx="20" cy="20" r="2" fill="#2563EB"/>
+            </svg>
+          </div>
+          <!-- 40px -->
+          <div class="swatch light s-40">
+            <svg width="25" height="25" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="17" stroke="#2563EB" stroke-width="2.5"/>
+              <path d="M8.5 27 Q5 20 9 13.5" stroke="#2563EB" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.35"/>
+              <path d="M7 29.5 Q2.5 20 7.5 11" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.2"/>
+              <line x1="20" y1="20" x2="28.66" y2="15" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="2" fill="#2563EB"/>
+            </svg>
+          </div>
+          <!-- 24px -->
+          <div class="swatch light s-24">
+            <svg width="16" height="16" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="17" stroke="#2563EB" stroke-width="2.5"/>
+              <path d="M8.5 27 Q5 20 9 13.5" stroke="#2563EB" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.35"/>
+              <line x1="20" y1="20" x2="28.66" y2="15" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="2" fill="#2563EB"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="swatch-label" style="margin-top:4px">Dark background</div>
+        <div class="swatch-row">
+          <div class="swatch dark s-64">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="17" stroke="#FFFFFF" stroke-width="2.5"/>
+              <path d="M8.5 27 Q5 20 9 13.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.35"/>
+              <path d="M7 29.5 Q2.5 20 7.5 11" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.2"/>
+              <line x1="20" y1="20" x2="28.66" y2="15" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="2" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="swatch dark s-40">
+            <svg width="25" height="25" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="17" stroke="#FFFFFF" stroke-width="2.5"/>
+              <path d="M8.5 27 Q5 20 9 13.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.35"/>
+              <path d="M7 29.5 Q2.5 20 7.5 11" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.2"/>
+              <line x1="20" y1="20" x2="28.66" y2="15" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="2" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="swatch dark s-24">
+            <svg width="16" height="16" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="17" stroke="#FFFFFF" stroke-width="2.5"/>
+              <path d="M8.5 27 Q5 20 9 13.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.35"/>
+              <line x1="20" y1="20" x2="28.66" y2="15" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="2" fill="#FFFFFF"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CONCEPT D — B + Hourglass
+    ============================================================ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="concept-label">Concept D</div>
+        <div class="concept-name">B + Hourglass</div>
+        <div class="concept-desc">The letter B whose two bumps form an hourglass silhouette — brand identity fused with time-saving.</div>
+      </div>
+
+      <div class="swatch-group">
+        <div class="swatch-label">Light background</div>
+        <div class="swatch-row">
+          <!-- 64px -->
+          <div class="swatch light s-64">
+            <!--
+              The B is drawn as a filled path.
+              Vertical spine on the left.
+              Top bump: curves right from top of spine to midpoint.
+              Bottom bump: curves right from midpoint to bottom of spine.
+              The two bumps together form an hourglass — wide at top, narrow at middle, wide at bottom.
+
+              Viewbox: 0 0 32 44
+              Spine: x=3, top y=3, bottom y=41, width=4
+              Midpoint y=22
+
+              Top bump:
+                Starts at (7,3), curves out to right side (~27) and comes back to (7,22).
+                Max width at ~y=10 area — but narrow at midpoint.
+                Control points for two bumps to be hourglass shaped:
+                We want the bumps to be widest near y=10 and y=34 and narrow at y=22.
+
+              Using cubic bezier:
+              Top bump right side: M 7,3 C 32,3 32,22 7,22
+              Bottom bump right side: M 7,22 C 32,22 32,41 7,41
+
+              Full path (filled):
+              Start bottom-left corner: (3,41)
+              Go up spine to (3,3)
+              Across top: (3,3) to (7,3)
+              Top bump curve out and back: (7,3) C (32,3) (32,22) (7,22)
+              Bottom bump curve out and back: (7,22) C (32,22) (32,41) (7,41)
+              Close back to (3,41)
+
+              This gives a classic B shape.
+              The hourglass emerges from the fact that both bumps share the narrow midpoint.
+            -->
+            <svg width="28" height="40" viewBox="0 0 32 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3 41 L3 3 L7 3
+                   C 30 3, 30 21, 7 22
+                   C 30 23, 30 41, 7 41
+                   Z"
+                fill="#2563EB"
+              />
+            </svg>
+          </div>
+          <!-- 40px -->
+          <div class="swatch light s-40">
+            <svg width="18" height="25" viewBox="0 0 32 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3 41 L3 3 L7 3
+                   C 30 3, 30 21, 7 22
+                   C 30 23, 30 41, 7 41
+                   Z"
+                fill="#2563EB"
+              />
+            </svg>
+          </div>
+          <!-- 24px -->
+          <div class="swatch light s-24">
+            <svg width="11" height="16" viewBox="0 0 32 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3 41 L3 3 L7 3
+                   C 30 3, 30 21, 7 22
+                   C 30 23, 30 41, 7 41
+                   Z"
+                fill="#2563EB"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="swatch-label" style="margin-top:4px">Dark background</div>
+        <div class="swatch-row">
+          <div class="swatch dark s-64">
+            <svg width="28" height="40" viewBox="0 0 32 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3 41 L3 3 L7 3
+                   C 30 3, 30 21, 7 22
+                   C 30 23, 30 41, 7 41
+                   Z"
+                fill="#FFFFFF"
+              />
+            </svg>
+          </div>
+          <div class="swatch dark s-40">
+            <svg width="18" height="25" viewBox="0 0 32 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3 41 L3 3 L7 3
+                   C 30 3, 30 21, 7 22
+                   C 30 23, 30 41, 7 41
+                   Z"
+                fill="#FFFFFF"
+              />
+            </svg>
+          </div>
+          <div class="swatch dark s-24">
+            <svg width="11" height="16" viewBox="0 0 32 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3 41 L3 3 L7 3
+                   C 30 3, 30 21, 7 22
+                   C 30 23, 30 41, 7 41
+                   Z"
+                fill="#FFFFFF"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards -->
+
+</body>
+</html>
