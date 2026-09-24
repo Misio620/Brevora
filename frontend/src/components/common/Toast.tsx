@@ -35,18 +35,18 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       <div role="status" aria-live="polite" className="pointer-events-none fixed bottom-4 right-4 z-50 flex flex-col gap-2">
         {toasts.map(t => (
-          <ToastItem key={t.id} toast={t} onDone={() => removeToast(t.id)} />
+          <ToastItem key={t.id} toast={t} onDone={removeToast} />
         ))}
       </div>
     </ToastContext.Provider>
   )
 }
 
-function ToastItem({ toast, onDone }: { toast: Toast; onDone: () => void }) {
+function ToastItem({ toast, onDone }: { toast: Toast; onDone: (id: number) => void }) {
   useEffect(() => {
-    const timer = setTimeout(onDone, 3000)
+    const timer = setTimeout(() => onDone(toast.id), 3000)
     return () => clearTimeout(timer)
-  }, [onDone])
+  }, [toast.id, onDone])
 
   const colors = {
     success: 'bg-emerald-600',
@@ -56,7 +56,7 @@ function ToastItem({ toast, onDone }: { toast: Toast; onDone: () => void }) {
 
   return (
     <div
-      className={`pointer-events-auto rounded-lg px-4 py-3 text-sm text-white shadow-lg ${colors[toast.type]} animate-in slide-in-from-right`}
+      className={`pointer-events-auto rounded-lg px-4 py-3 text-sm text-white shadow-lg ${colors[toast.type]} toast-enter`}
     >
       {toast.message}
     </div>

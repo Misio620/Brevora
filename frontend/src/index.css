@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap');
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 html,
 body,
@@ -114,9 +115,20 @@ body::after {
   background: rgba(30, 41, 59, 0.5);
 }
 
+/* Toast enter animation */
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.toast-enter {
+  animation: toast-in 0.2s ease-out;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .wordmark-shimmer {
+  .wordmark-shimmer,
+  .toast-enter {
     animation: none;
   }
 }
