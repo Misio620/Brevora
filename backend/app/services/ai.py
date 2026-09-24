@@ -67,11 +67,15 @@ def _get_client() -> genai.Client:
     if _client is None:
         if not settings.GOOGLE_API_KEY:
             raise RuntimeError("GOOGLE_API_KEY is not configured")
-        # The SDK does not retry by default; Gemini often answers 503/429 during demand spikes
+        # The SDK does not retry by default; Gemini often answers 503 during demand spikes.
+        # 429 is left out: free-tier quotas are counted per model, so switching to the
+        # fallback model is faster than waiting for the same model's quota window.
         _client = genai.Client(
             api_key=settings.GOOGLE_API_KEY,
             http_options=types.HttpOptions(
-                retry_options=types.HttpRetryOptions(attempts=4, initial_delay=5, max_delay=60)
+                retry_options=types.HttpRetryOptions(
+                    attempts=4, initial_delay=5, max_delay=60, http_status_codes=[408, 500, 502, 503, 504]
+                )
             ),
         )
     return _client
