@@ -5,6 +5,9 @@ import Sidebar from '@/components/layout/Sidebar'
 import VideoGrid from '@/components/video/VideoGrid'
 import ChannelManager from '@/components/channel/ChannelManager'
 import type { VideoWithState } from '@/hooks/useVideos'
+import { useDebouncedValue } from '@/hooks/useDebouncedValue'
+
+const SEARCH_DEBOUNCE_MS = 300
 
 export default function DashboardPage() {
   const navigate = useNavigate()
@@ -18,7 +21,18 @@ export default function DashboardPage() {
   const [isManagerOpen, setIsManagerOpen] = useState(false)
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
 
+  const debouncedSearch = useDebouncedValue(filters.search, SEARCH_DEBOUNCE_MS)
+
   useEffect(() => { document.title = 'Brevora — 影片總覽' }, [])
+
+  useEffect(() => {
+    if (!isMobileFilterOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMobileFilterOpen(false)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isMobileFilterOpen])
 
   // Reset page when filters change
   const handleFilterChange = (newFilters: typeof filters) => {
@@ -58,7 +72,10 @@ export default function DashboardPage() {
         <div className="fixed inset-0 z-40 md:hidden" onClick={() => setIsMobileFilterOpen(false)}>
           <div className="absolute inset-0 bg-black/50" />
           <div
-            className="absolute left-0 top-0 h-full w-64 border-r border-slate-700/50 p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label="篩選"
+            className="absolute left-0 top-0 h-full w-64 overflow-y-auto border-r border-slate-700/50 p-4"
             style={{ background: 'rgba(15, 23, 42, 0.95)' }}
             onClick={e => e.stopPropagation()}
           >
@@ -76,10 +93,16 @@ export default function DashboardPage() {
             </div>
             <Sidebar
               filters={filters}
-              onFilterChange={(f) => { handleFilterChange(f); setIsMobileFilterOpen(false) }}
+              onFilterChange={handleFilterChange}
               onOpenManager={() => { setIsMobileFilterOpen(false); setIsManagerOpen(true) }}
               mobile
             />
+            <button
+              onClick={() => setIsMobileFilterOpen(false)}
+              className="mt-3 w-full rounded-lg bg-blue-600 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+            >
+              查看結果
+            </button>
           </div>
         </div>
       )}
@@ -92,7 +115,7 @@ export default function DashboardPage() {
         />
         <main id="main-content" className="flex min-w-0 flex-1 flex-col">
           <VideoGrid
-            filters={filters}
+            filters={{ ...filters, search: debouncedSearch }}
             page={page}
             onPageChange={setPage}
             onVideoSelect={handleVideoSelect}
