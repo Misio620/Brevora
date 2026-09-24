@@ -58,6 +58,12 @@ export default function VideoDetailPage() {
     })
   }
 
+  // Opened from a shared link or new tab: there is no in-app page to go back to
+  const handleBack = () => {
+    if ((window.history.state?.idx ?? 0) > 0) navigate(-1)
+    else navigate('/')
+  }
+
   const handleRetry = () => {
     processMutation.mutate(video.youtube_id)
   }
@@ -78,7 +84,7 @@ export default function VideoDetailPage() {
         <div className="mx-auto max-w-4xl px-6 py-5">
           <div className="mb-3 flex items-center justify-between">
             <button
-              onClick={() => navigate(-1)}
+              onClick={handleBack}
               aria-label="返回上一頁"
               className="flex items-center gap-1 text-sm text-slate-400 transition hover:text-slate-200"
             >
