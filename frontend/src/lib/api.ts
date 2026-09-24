@@ -1,3 +1,5 @@
+import { DEMO_MODE } from './demoMode'
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 function getToken(): string | null {
@@ -13,6 +15,11 @@ export function clearToken() {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  if (DEMO_MODE) {
+    const { demoRequest } = await import('./demo')
+    return demoRequest(options.method || 'GET', path, options.body as string | undefined) as Promise<T>
+  }
+
   const token = getToken()
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
