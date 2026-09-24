@@ -65,12 +65,21 @@ def _get_client() -> genai.Client:
     if _client is None:
         if not settings.GOOGLE_API_KEY:
             raise RuntimeError("GOOGLE_API_KEY is not configured")
-        _client = genai.Client(api_key=settings.GOOGLE_API_KEY)
+        # The SDK does not retry by default; Gemini often answers 503/429 during demand spikes
+        _client = genai.Client(
+            api_key=settings.GOOGLE_API_KEY,
+            http_options=types.HttpOptions(
+                retry_options=types.HttpRetryOptions(attempts=4, initial_delay=5, max_delay=60)
+            ),
+        )
     return _client
 
 
 async def _generate(contents, config: types.GenerateContentConfig | None = None) -> str:
     """Calls the primary model, falling back to the secondary one on any error."""
+    config = config or types.GenerateContentConfig()
+    # No tools are used; disabling AFC also silences the SDK's per-call warning
+    config.automatic_function_calling = types.AutomaticFunctionCallingConfig(disable=True)
     models = [m for m in dict.fromkeys([settings.GEMINI_MODEL, settings.GEMINI_FALLBACK_MODEL]) if m]
     last_error: Exception | None = None
 
