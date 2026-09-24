@@ -44,22 +44,16 @@ cd brevora
 
 ### 2. Backend Setup
 
+From the project root (creates `backend/venv` and installs dependencies, works on Windows / macOS / Linux):
+
 ```bash
-cd backend
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-# macOS / Linux
-source venv/bin/activate
-
-pip install -r requirements.txt
+pnpm run install:backend
 ```
 
-Copy and fill in environment variables:
+Copy and fill in environment variables (see [docs/google_setup.md](docs/google_setup.md) for Google credentials):
 
 ```bash
-cp .env.example .env
+cp backend/.env.example backend/.env
 ```
 
 Required variables in `backend/.env`:
@@ -73,11 +67,12 @@ Required variables in `backend/.env`:
 | `JWT_SECRET` | Random hex string (`python -c "import secrets; print(secrets.token_hex(32))"`) |
 | `ENCRYPTION_KEY` | Fernet key (`python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`) |
 | `FRONTEND_URL` | `http://localhost:5173` |
-| `BACKEND_URL` | `http://localhost:8002` |
+| `BACKEND_URL` | `http://localhost:8000` |
 
-Run database migration:
+Run database migration (with `backend/venv` activated):
 
 ```bash
+cd backend
 alembic upgrade head
 ```
 
@@ -91,7 +86,7 @@ pnpm install
 Create `frontend/.env`:
 
 ```
-VITE_API_URL=http://localhost:8002
+VITE_API_URL=http://localhost:8000
 ```
 
 ### 4. Run
@@ -103,7 +98,7 @@ pnpm install
 pnpm dev
 ```
 
-This starts both frontend (http://localhost:5173) and backend (http://localhost:8002) concurrently.
+This starts both frontend (http://localhost:5173) and backend (http://localhost:8000) concurrently.
 
 ## Project Structure
 
