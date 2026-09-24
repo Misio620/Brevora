@@ -139,7 +139,7 @@ export default function VideoDetailPage() {
             <div className="flex flex-col items-center py-12 text-center">
               <LoadingSpinner className="mb-4" />
               <p className="text-sm text-slate-400">正在生成節目筆記，請稍候...</p>
-              <p className="mt-1 text-xs text-slate-500">通常需要 10-30 秒</p>
+              <p className="mt-1 text-xs text-slate-500">約需 30 秒到數分鐘，影片越長越久</p>
             </div>
           ) : video.summary ? (
             <SummaryDisplay summary={video.summary} />

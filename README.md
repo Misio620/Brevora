@@ -61,6 +61,8 @@ Required variables in `backend/.env`:
 | Variable | Description |
 |----------|-------------|
 | `GOOGLE_API_KEY` | Gemini API key ([Get one](https://aistudio.google.com/app/apikey)) |
+| `GEMINI_MODEL` | Optional. Primary model, default `gemini-3.6-flash` |
+| `GEMINI_FALLBACK_MODEL` | Optional. Used when the primary model fails, default `gemini-3.5-flash` |
 | `GOOGLE_CLIENT_ID` | OAuth client ID |
 | `GOOGLE_CLIENT_SECRET` | OAuth client secret |
 | `DATABASE_URL` | PostgreSQL connection string |

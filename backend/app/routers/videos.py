@@ -352,15 +352,3 @@ async def _add_videos_to_feed(db: AsyncSession, user_id, videos: list[dict]) -> 
     db.add_all(new_links)
     await db.flush()
     return len(new_links)
-
-
-@router.get("/{youtube_id}/transcript")
-async def get_transcript(
-    youtube_id: str,
-    current_user: User = Depends(get_current_user),
-):
-    """Get the transcript for a video."""
-    transcript = await ai.get_transcript(youtube_id)
-    if not transcript:
-        raise HTTPException(status_code=404, detail="Transcript not available")
-    return {"transcript": transcript}
