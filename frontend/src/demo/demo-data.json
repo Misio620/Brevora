@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-09-24T07:05:38+00:00",
+  "channels": [
+    {
+      "id": "UCRYY7IEbkHLH_ScJCu9eWDQ",
+      "title": "How I AI",
+      "thumbnail": "https://yt3.ggpht.com/Thb55I_2ftuHK444SorBJEAzzYR5t49TeApTM-_jKE637yrRWZfsANTUGX179l12PuidNijpOA=s800-c-k-c0x00ffffff-no-rj"
+    },
+    {
+      "id": "UCGq-a57w-aPwyi3pW7XLiHw",
+      "title": "The Diary Of A CEO",
+      "thumbnail": "https://yt3.ggpht.com/JHCZDz37bsTmwoE1o4LEodF5vhsHfk29kCEauDTFr27-7hHXsHHvvWGzcG77v32ERrkpfInkGQ=s800-c-k-c0x00ffffff-no-rj"
+    },
+    {
+      "id": "UChhw6DlKKTQ9mYSpTfXUYqA",
+      "title": "Starter Story",
+      "thumbnail": "https://yt3.ggpht.com/FbXXhP5yCeqnwGyq6X10dcS7I-_C2BHslNRpLSIRZ5RqzvNdG9X7l8znHQ7fKcXxfGkjpzDMlg=s800-c-k-c0x00ffffff-no-rj"
+    }
+  ],
+  "videos": [
+    {
+      "youtube_id": "LMT-bknLmNo",
+      "channel_id": "UCRYY7IEbkHLH_ScJCu9eWDQ",
+      "channel_title": "How I AI",
+      "title": "I reviewed Opus 5.5 and GPT-6 Sol live - and the results surprised me",
+      "thumbnail": "https://i.ytimg.com/vi/LMT-bknLmNo/maxresdefault.jpg",
+      "published_at": "2026-09-22T22:48:21Z",
+      "duration_seconds": 2332,
+      "summary": "## 一句話主題\n實測 Anthropic 與 OpenAI 最新中階模型，透過盲測基準評估開發效率、UI 原型與產出品質。\n\n## 摘要\n本影片針對 Anthropic 與 OpenAI 同週發布的三款模型（Claude Opus 5.5、GPT-6 Sol 與 GPT-6 Luna）進行實測評估。講者透過自製的盲測基準（Vibe Review），在知識工作、前端原型、後端程式碼審計與 SVG 繪製等多元場景中比較真實表現。結論指出，Anthropic Opus 5.5 在綜合任務與日常體驗上顯著提升，而 OpenAI 模型在速度與視覺圖像生成上較有優勢，同時揭示了自動化 LLM 評委與人類實際偏好存在巨大偏差。\n\n## 五個關鍵要點\n- `[02:31]` 分析模型定價與快取策略：解析 Opus 5.5、GPT-6 Sol 與 Luna 均專注於降低快取成本與 Token 消耗，而非推升模型能力極限。\n- `[04:12]` 評估安全防護機制：說明 Opus 5.5 導入的資安與生物安全 Guardrails，在涉及敏感代碼時會自動降級至舊版或阻擋執行。\n- `[05:25]` 比較溝通風格與回應延遲：指出 Opus 5.5 顯著改善舊版的說教與冗長問題，而 GPT-6 Sol 則在反應速度與專注度上領先。\n- `[09:01]` 執行盲測基準實測：透過盲測平台在郵件整理、PRD 評估、UI 開發與長期 Agent 任務等項目進行人眼主觀打分。\n- `[36:51]` 比對盲測結果與 LLM 評委偏差：揭露人類評分（偏好 Opus 5.5 與 Astra）與 LLM-as-a-judge 產生負相關（r = -0.06），強調必須建立符合自身需求的評測盲測。\n\n## 延伸重點\n- `[28:25]` 測試 SVG 向量繪圖能力：發現 OpenAI 模型（Astra 與 Sol）在生成 SVG 角色與插圖方面品質高於 Anthropic 模型。\n- `[30:00]` 檢視短影音剪輯與字幕疊加：證實目前所有 LLM 在自動化影片剪輯與時間軸精準切割任務上仍普遍表現不佳。\n- `[31:27]` 挑戰 3D 建模基準（Barbie Bench）：利用 Three.js 生成 3D 時裝模特兒，測試模型處理複雜三維幾何與風格化的極限。\n\n## 行動呼籲\n- 建立屬於團隊自己的盲測基準（Vibe Check），親自評測不同模型的實際產出。\n- 檢查 API 呼叫中的 Prompt Caching 設定，最大化快取優惠以大幅降低開發成本。",
+      "translated_title": "我直播評測了 Opus 5.5 和 GPT-6 Sol，結果出乎我的意料",
+      "model": "gemini-3.6-flash",
+      "generated_at": "2026-09-24T06:35:37+00:00"
+    },
+    {
+      "youtube_id": "QBmgF1kJSK4",
+      "channel_id": "UCRYY7IEbkHLH_ScJCu9eWDQ",
+      "channel_title": "How I AI",
+      "title": "7 Grok Bot agents I use every day",
+      "thumbnail": "https://i.ytimg.com/vi/QBmgF1kJSK4/maxresdefault.jpg",
+      "published_at": "2026-09-02T12:00:25Z",
+      "duration_seconds": 2181,
+      "summary": "## 一句話主題\n解析 Grok Bot 平台的應用場景，展示如何透過雲端 Routine 與多帳號 Plugin 替代傳統開源 Agent 的維護負擔。\n\n## 摘要\n針對希望利用 AI Agent 自動化日常工作與生活營運的管理者、工程師與創業者，講者分享將所有 OpenClaw 流程轉移至 Grok Bot 的實戰經驗。影片詳細展示了幕僚總管、家庭報紙、GitHub PR 審查、SOC 2 資安監控與個人消費分析等自動化 Agent 案例。核心結論指出，Grok Bot 透過開箱即用的雲端執行環境、多帳號連線與 Routine 自動排程，能提供優異的 UX 並大幅降低自主託管 Agent 的技術維護門檻。\n\n## 五個關鍵要點\n- [02:10] 解析 Grok Bot 核心架構，支援單一 Plugin 連結多個帳戶、雲端虛擬電腦執行環境與可定時執行的 Routine 功能。\n- [08:03] 建立 Chief 幕僚總管 Agent，每小時巡檢多個 Gmail 與 Slack 帳號，僅針對緊急事項通知使用者並生成晨報。\n- [12:45] 設定 TradBot 家庭 Agent，自動整合學校與課後活動日程，定時列印實體「廚房報紙」與發送課後接送提醒。\n- [19:52] 部署工程與合規 Agent，自動 Rebase 堆疊的 GitHub PR 並整合 Cursor 雲端 Agent，同時登入 SOC 2 面板監控資安漏洞。\n- [33:02] 執行 OpenClaw 遷移方案，利用救難 Agent 將所有身分設定與 Cron 檔打包成 Zip 檔並匯入 Grok Bot。\n\n## 延伸重點\n- [24:00] 建立 Holly 客服 Agent，結合工具審批機制處理 Stripe 退款，並自動巡檢社群 Slack 回應技術疑問。\n- [27:14] 設定 Penny Pincher 節約 Agent，掃描郵件收據以辨識並停用未使用的訂閱服務，同時追蹤保單續約時間。\n- [30:20] 訓練 Sylvie 時尚 Agent，分析 Pinterest 靈感板建立專屬造型目錄，並於每週一自動搜尋零售商的折扣商品。\n\n## 行動呼籲\n依據專才專用的原則，為個人或團隊建立具備單一明確職責的 Grok Bot。設定自動排程（Routine）與 Plugin 授權，讓 Agent 在背景自動完成郵件巡檢、每日摘要與工作審查。",
+      "translated_title": "我每天使用的 7 個 Grok Bot 代理",
+      "model": "gemini-3.6-flash",
+      "generated_at": "2026-09-24T06:36:59+00:00"
+    },
+    {
+      "youtube_id": "MGxcosNuC8k",
+      "channel_id": "UCGq-a57w-aPwyi3pW7XLiHw",
+      "channel_title": "The Diary Of A CEO",
+      "title": "Andrew Huberman: The Real Reason You Can't Get Deep Sleep & Wake Up Exhausted",
+      "thumbnail": "https://i.ytimg.com/vi/MGxcosNuC8k/maxresdefault.jpg",
+      "published_at": "2026-09-03T07:00:05Z",
+      "duration_seconds": 8208,
+      "summary": "## 一句話主題\n神經科學家 Andrew Huberman 解析健康優化協定，透過光照、水分、運動與生理呼吸掌控晝夜節律與身心表現。\n\n## 摘要\n本集節目專為尋求提升身心健康與工作表現的觀眾設計，由神經科學家 Andrew Huberman 深入剖析晝夜節律與荷爾蒙機制的互動運作。影片探討了清晨光照、水分補充、規律運動、生理性嘆氣以及睡眠優化等核心協定，說明如何有效調控皮質醇與褪黑激素分泌。核心結論指出，不需依賴昂貴設備，僅需透過每天重複實踐基礎生物學行為，即可顯著改善意志力、減緩壓力並提升整體生活品質。\n\n## 五個關鍵要點\n- [0:07:20] 醒來立即補充 16–32 盎司水分，透過迷走神經活化大腦並提升晨間皮質醇峰值。\n- [0:08:19] 在清晨觀看陽光或 10,000 Lux 燈光，藉由視網膜細胞調節晝夜節律與夜間褪黑激素。\n- [0:24:40] 於起床後前幾小時完成 45 分鐘運動，利用複合動作與規律訓練同步生物時鐘。\n- [0:47:21] 使用生理性嘆氣（連續兩次吸氣後長呼氣）迅速降低生理壓力與減緩心率。\n- [1:03:35] 進行 90 至 120 分鐘的高強度專注學習，藉由嘗試與錯誤訊號驅動大腦神經可塑性。\n\n## 延伸重點\n- 在傍晚觀看戶外自然光，緩衝夜間人工螢幕藍光對皮質醇與睡眠的干擾。\n- 採用側睡姿勢並微幅抬高頭部，促進腦部甘淋巴系統清除代謝廢物。\n- 晚餐攝取適量複合澱粉，協助降低夜間皮質醇以改善入睡與睡眠品質。\n- 刻意從事具挑戰性或不喜歡的事物，刺激前中扣帶皮層（AMCC）成長並增強意志力。\n\n## 行動呼籲\n每日清晨起床後立即飲用一大杯水，並至戶外接受自然陽光照射 10–15 分鐘。遇到急性壓力時，立刻進行 1–3 次生理性嘆氣以快速穩定神經系統。",
+      "model": "gemini-3.6-flash",
+      "translated_title": "安德魯·休伯曼：你無法獲得深層睡眠且醒來時疲憊不堪的真正原因",
+      "generated_at": "2026-09-24T07:05:38+00:00"
+    },
+    {
+      "youtube_id": "32u5T6lO8qk",
+      "channel_id": "UCGq-a57w-aPwyi3pW7XLiHw",
+      "channel_title": "The Diary Of A CEO",
+      "title": "Billionaire's WARNING: I'm SELLING. The Crash Is Already Here!",
+      "thumbnail": "https://i.ytimg.com/vi/32u5T6lO8qk/maxresdefault.jpg",
+      "published_at": "2026-06-25T07:00:32Z",
+      "duration_seconds": 6352,
+      "summary": "## 一句話主題\n資深投資家 Jeremy Grantham 剖析美股與 AI 泡沫危機，並揭示環境毒素與貧富差距對人類社會與個人的深遠威脅。\n\n## 摘要\n本集節目專訪曾管理千億美元資產的傳奇投資人 Jeremy Grantham，針對當前全球經濟與社會危機進行深度剖析。Grantham 指出美股與 AI 科技股正面臨歷史性高估泡沫，同時警告塑化劑與農藥等環境毒素正引發全球生育率驟降與健康危機。他建議個人應將資產分散至非美股票與債券，並在日常生活中積極降低毒素暴露，以應對未來的嚴峻挑戰。\n\n## 五個關鍵要點\n- `[04:45]` 警告 AI 與美股正處於歷史級資產泡沫，預測市場高估後恐面臨大幅回檔修正。\n- `[13:11]` 提出避險資產配置策略，建議將資金分散至非美市場股票、國債、黃金與現金。\n- `[20:15]` 揭露投資顧問不警告泡沫的體制誘因，因提早離場會損失客戶資產管理費與業務。\n- `[35:12]` 剖析 AI 技術失控的潛在風險，強調若未植入善意機制，可能對人類生存造成災難性後果。\n- `[1:10:55]` 引用數據指出內分泌干擾物與微塑膠正導致精子數量驟降，威脅人類長期繁衍與健康。\n\n## 延伸重點\n- `[38:12]` 評估科技巨頭（Mag 7）於 AI 領域的資本過度支出，指出巨額投入恐難以換取預期的壟斷利潤。\n- `[53:05]` 分析美國貧富差距（基尼係數）惡化現象，指出歷史上極端不平等往往需透過體制重置來化解。\n- `[1:26:14]` 建議使用 Yuka 或 EWG 等應用程式掃描商品成分，主動避免接觸有害化學物質。\n- `[1:27:45]` 建議孕婦於懷孕期間暫停使用化妝品並選擇有機飲食，保護胎兒免受塑化劑與農藥侵害。\n- `[1:35:50]` 比較美歐生活品質與社會安全網，指出美國因醫療不均與社會契約解體而導致預期壽命下降。\n\n## 行動呼籲\n審視個人投資組合，減少高估的美股與科技股部位，轉向非美股票與固定收益資產。同時下載商品成分掃描 App，從飲食與日用品中主動排除微塑膠與內分泌干擾物。",
+      "translated_title": "億萬富豪警告：我正在拋售！大崩盤已經來臨！",
+      "model": "gemini-3.6-flash",
+      "generated_at": "2026-09-24T06:48:33+00:00"
+    },
+    {
+      "youtube_id": "8xgnm6SynH4",
+      "channel_id": "UChhw6DlKKTQ9mYSpTfXUYqA",
+      "channel_title": "Starter Story",
+      "title": "I Spent 24 Hours With Roblox Millionaires",
+      "thumbnail": "https://i.ytimg.com/vi/8xgnm6SynH4/maxresdefault.jpg",
+      "published_at": "2025-04-23T17:00:26Z",
+      "duration_seconds": 1231,
+      "summary": "## 一句話主題\n實地走訪 Austin 探索三位青年如何透過 Roblox 遊戲開發與品牌行銷 agency 打造月入數萬美元的百萬事業。\n\n## 摘要\n本影片針對對獨立遊戲開發與網路創業感興趣的創業者，深入專訪三位未讀大學即在 Austin 創業成功的年輕人。影片詳細拆解了 Roblox 平台的經濟規模、遊戲變現機制、爆款遊戲開發框架，以及為知名品牌提供互動式行銷服務的營運模式。核心結論強調應採取「先測試再開發」的敏捷驗證法，並透過標準化流程與建立真實社群網絡來實現事業規模化。\n\n## 五個關鍵要點\n- [04:06] 解析 Roblox 的雙重變現模式，包含玩家購買虛擬貨幣 Robux 獲得道具，以及品牌贊助建立互動體驗地圖。\n- [09:23] 說明敏捷開發的重要性，Cole 分享花費巨資失敗後轉向「先測試再建構」策略，成功打造月入 4.5 萬美元的遊戲。\n- [12:40] 拆解爆款遊戲的三大關鍵框架，包含提高點擊率的吸睛標題、注重朋友間的社交玩法，以及誘發好奇心的高重複可玩性。\n- [14:34] 展示品牌行銷社的營運方式，Jake 透過 LinkedIn 發布教育性內容吸引客戶，並利用 45 步 SOP 與 Airtable 進行遠端專案管理。\n- [17:36] 傳授年輕創業者建立事業的步驟，建議先投入時間磨練單一技能並提供自由服務，再逐步轉化為長期商業模式。\n\n## 延伸重點\n- [05:18] 引述數據說明 Roblox 的龐大市場，美國 16 歲以下青少年有五成每天遊玩，月活躍用戶高達 4 億人。\n- [08:06] 介紹利用 AI 編程工具（如 Lovable、Cursor）加速開發應用程式的課程與軟體趨勢。\n- [13:27] 分析遊戲內購經濟設計，Ian 說明透過每日商店販售皮膚、技能與金幣來提升每位付費用戶平均收入（ARPPU）。\n- [19:36] 建議創業者透過定期線上會議交流，主動建立非交易性、互相扶持的志同道合夥伴圈。\n\n## 行動呼籲\n立即運用敏捷測試概念驗證產品概念，並利用社交平台分享專業知識以累積個人影響力與潛在客戶。",
+      "translated_title": "我與 Roblox 百萬富翁度過了 24 小時",
+      "model": "gemini-3.6-flash",
+      "generated_at": "2026-09-24T07:03:26+00:00"
+    },
+    {
+      "youtube_id": "8BtHk-oNlN0",
+      "channel_id": "UChhw6DlKKTQ9mYSpTfXUYqA",
+      "channel_title": "Starter Story",
+      "title": "I cloned 3 apps and now make $35K/month",
+      "thumbnail": "https://i.ytimg.com/vi/8BtHk-oNlN0/maxresdefault.jpg",
+      "published_at": "2025-07-26T17:00:09Z",
+      "duration_seconds": 818,
+      "summary": "## 一句話主題\n解析不需創新即可獲利的 SaaS 策略，透過複製並改善已獲驗證的軟體快速建立百萬月營收。\n\n## 摘要\n本影片專為想要開發軟體獲利的個人創業者設計，邀請前驗光師 Samuel Rondot 分享他如何自學程式，並經營 3 款月總營收達 3.5 萬美元的 SaaS 應用程式。Samuel 強調創業無需發明新點子，只需在社群平台上找出已有營收驗證的軟體，利用 AI 工具快速開發 MVP，並結合付費廣告與 SEO 自動化擴大市場。\n\n## 五個關鍵要點\n- [02:03] 運用 AI 輔助工具與真實專案導向學習開發，大幅縮短傳統自學程式的時間。\n- [02:46] 在 X/Twitter 的獨立開發者社群尋找已有營收數據的產品，專注於複製已獲驗證的解決方案。\n- [03:55] 檢查產品的 MRR 營收截圖、Ahrefs 流量管道與維護成本，嚴格過濾出高可行性專案。\n- [08:10] 結合 Google/Meta 廣告、SEO 長尾流量、自動化無臉影片與聯盟行銷建立四階段推廣體系。\n- [11:46] 堅持在兩週內推出極簡可行性產品（MVP），先投放廣告驗證市場需求後再進行後續開發。\n\n## 延伸重點\n- [07:29] 拆解 Samuel 旗下 3 款 SaaS 產品（LinkedIn 抓取、AI 影片生成、AI 網頁開發）的營收與用戶規模。\n- [09:54] 建立高效獨立開發技術棧，採用 Next.js、Node.js、Vercel、Stripe 與 Outrank.so 自動化工具。\n- [10:31] 公開軟體營運成本與利潤結構，展現高達 73% 至 75% 的高利潤率管理模式。\n\n## 行動呼籲\n前往 X/Twitter 搜尋 BuildInPublic 或 Solopreneur 社群，尋找一款已有用戶付費且維護簡單的熱門軟體。運用 AI 開發工具在兩週內打造 MVP，並立即投放小額廣告驗證真實市場需求。",
+      "translated_title": "我複製了 3 款 App，現在月入 3.5 萬美元",
+      "model": "gemini-3.6-flash",
+      "generated_at": "2026-09-24T06:51:33+00:00"
+    }
+  ]
+}
