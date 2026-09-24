@@ -1,7 +1,7 @@
 """Generates the frontend demo dataset from real YouTube videos and real Gemini notes.
 
 Usage (from the repo root, after `node scripts/backend.mjs install`):
-    backend/venv/bin/python scripts/generate_demo_data.py [--force] [VIDEO_ID ...]
+    backend/venv/bin/python scripts/generate_demo_data.py [--force] [--only VIDEO_ID ...]
 
 Needs GOOGLE_API_KEY (Gemini) and YOUTUBE_API_KEY (YouTube Data API v3).
 Metadata comes from the Data API, never from youtube.com pages: YouTube answers
@@ -32,6 +32,7 @@ from app.services import ai  # noqa: E402
 
 OUTPUT = REPO_ROOT / "frontend" / "src" / "demo" / "demo-data.json"
 YOUTUBE_API = "https://www.googleapis.com/youtube/v3"
+NOTE_FIELDS = ("summary", "translated_title", "model", "generated_at")
 
 # Three channels, two videos each
 DEMO_VIDEOS = [
@@ -118,7 +119,7 @@ def write_output(videos: list[dict], channels: list[dict]) -> None:
 
 async def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("video_ids", nargs="*", default=DEMO_VIDEOS)
+    parser.add_argument("--only", nargs="+", metavar="VIDEO_ID", help="generate only these videos")
     parser.add_argument("--force", action="store_true", help="regenerate notes that already exist")
     args = parser.parse_args()
 
@@ -128,7 +129,8 @@ async def main() -> None:
     if not get_settings().GOOGLE_API_KEY:
         sys.exit("GOOGLE_API_KEY is not set")
 
-    videos, channels = fetch_metadata(youtube_key, args.video_ids)
+    # Metadata always covers the whole demo set so the output file never loses videos
+    videos, channels = fetch_metadata(youtube_key, DEMO_VIDEOS)
     existing = load_existing()
     total_minutes = sum(v["duration_seconds"] for v in videos) / 60
     print(f"{len(videos)} videos, {total_minutes:.0f} min in total")
@@ -137,9 +139,11 @@ async def main() -> None:
     for i, video in enumerate(videos):
         label = f"[{i + 1}/{len(videos)}] {video['youtube_id']} ({video['duration_seconds'] // 60} min)"
         previous = existing.get(video["youtube_id"])
-        if previous and previous.get("summary") and not args.force:
-            print(f"{label} skipped, already generated")
-            video.update({k: previous[k] for k in ("summary", "translated_title", "model", "generated_at")})
+        selected = not args.only or video["youtube_id"] in args.only
+        if not selected or (previous and previous.get("summary") and not args.force):
+            if previous:
+                video.update({k: previous.get(k) for k in NOTE_FIELDS})
+            print(f"{label} skipped, {'not selected' if not selected else 'already generated'}")
             continue
 
         print(f"{label} generating...", flush=True)
@@ -153,7 +157,7 @@ async def main() -> None:
             failures += 1
             print(f"{label} failed: {e}")
             if previous:
-                video.update({k: previous.get(k) for k in ("summary", "translated_title", "model", "generated_at")})
+                video.update({k: previous.get(k) for k in NOTE_FIELDS})
             continue
         video["generated_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         print(f"{label} done in {time.monotonic() - started:.0f}s with {video['model']}")
