@@ -16,8 +16,13 @@ export default function TopBar() {
 
   const handleSync = () => {
     syncMutation.mutate(undefined, {
-      onSuccess: (data) => {
-        toast(`同步完成，找到 ${data.new_videos || 0} 部新影片`, 'success')
+      onSuccess: ({ new_videos, failed_channels }) => {
+        const summary = new_videos > 0 ? `同步完成，新增 ${new_videos} 部影片` : '已是最新，沒有新影片'
+        if (failed_channels > 0) {
+          toast(`${summary}（${failed_channels} 個頻道同步失敗）`, 'info')
+        } else {
+          toast(summary, 'success')
+        }
       },
       onError: (err) => {
         toast(`同步失敗：${err.message}`, 'error')

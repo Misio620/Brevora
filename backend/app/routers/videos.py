@@ -1,10 +1,10 @@
+import asyncio
 import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
 from sqlalchemy import select, func, and_, or_
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
 
 from app.config import get_settings
 from app.database import get_db, async_session
@@ -24,6 +24,8 @@ from app.services import ai, youtube
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/videos", tags=["videos"])
 settings = get_settings()
+
+SYNC_CONCURRENCY = 5
 
 
 def _video_to_response(video: Video, uv: UserVideo | None) -> VideoWithUserState:
@@ -276,85 +278,80 @@ async def _run_ai_processing(user_id: str, video_id: str, youtube_id: str, title
 
 @router.post("/sync", response_model=SyncResponse)
 async def sync_videos(
-    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Trigger sync: fetch latest videos from all pinned channels."""
-    # Get pinned channels
+    """Fetch latest videos from all pinned channels and add new ones to the user's feed."""
     result = await db.execute(
-        select(PinnedChannel).where(PinnedChannel.user_id == current_user.id)
+        select(PinnedChannel.channel_id).where(PinnedChannel.user_id == current_user.id)
     )
-    pinned = result.scalars().all()
+    channel_ids = [row[0] for row in result.all()]
 
-    if not pinned:
+    if not channel_ids:
         return SyncResponse(status="done", new_videos=0)
 
-    background_tasks.add_task(
-        _run_sync,
-        user_id=str(current_user.id),
-        channel_ids=[ch.channel_id for ch in pinned],
-        user=current_user,
+    semaphore = asyncio.Semaphore(SYNC_CONCURRENCY)
+
+    async def fetch(channel_id: str) -> list[dict] | None:
+        async with semaphore:
+            try:
+                return await youtube.get_channel_videos(current_user, channel_id)
+            except Exception as e:
+                logger.warning(f"Failed to fetch videos for channel {channel_id}: {e}")
+                return None
+
+    results = await asyncio.gather(*(fetch(ch) for ch in channel_ids))
+    fetched = [videos for videos in results if videos is not None]
+
+    if not fetched:
+        raise HTTPException(status_code=502, detail="Failed to fetch videos from YouTube")
+
+    new_count = await _add_videos_to_feed(db, current_user.id, [v for videos in fetched for v in videos])
+    logger.info(f"Sync complete for user {current_user.id}: {new_count} new videos")
+
+    return SyncResponse(
+        status="done",
+        new_videos=new_count,
+        failed_channels=len(channel_ids) - len(fetched),
     )
 
-    return SyncResponse(status="syncing")
 
+async def _add_videos_to_feed(db: AsyncSession, user_id, videos: list[dict]) -> int:
+    """Upsert videos into the shared cache and link any the user doesn't have yet. Returns the number linked."""
+    incoming = {v["youtube_id"]: v for v in videos}
+    if not incoming:
+        return 0
 
-async def _run_sync(user_id: str, channel_ids: list[str], user):
-    """Background task to sync videos from YouTube."""
-    new_count = 0
+    result = await db.execute(select(Video).where(Video.youtube_id.in_(incoming.keys())))
+    by_youtube_id = {video.youtube_id: video for video in result.scalars().all()}
 
-    async with async_session() as db:
-        try:
-            for channel_id in channel_ids:
-                try:
-                    videos = await youtube.get_channel_videos(user, channel_id)
-                except Exception as e:
-                    logger.warning(f"Failed to fetch videos for channel {channel_id}: {e}")
-                    continue
+    for youtube_id, v in incoming.items():
+        if youtube_id not in by_youtube_id:
+            video = Video(
+                youtube_id=youtube_id,
+                channel_id=v["channel_id"],
+                title=v["title"],
+                thumbnail=v.get("thumbnail"),
+                published_at=v.get("published_at"),
+                channel_title=v.get("channel_title"),
+            )
+            db.add(video)
+            by_youtube_id[youtube_id] = video
+    await db.flush()
 
-                for v in videos:
-                    # Upsert video
-                    result = await db.execute(
-                        select(Video).where(Video.youtube_id == v["youtube_id"])
-                    )
-                    existing = result.scalar_one_or_none()
+    video_ids = [video.id for video in by_youtube_id.values()]
+    result = await db.execute(
+        select(UserVideo.video_id).where(
+            UserVideo.user_id == user_id,
+            UserVideo.video_id.in_(video_ids),
+        )
+    )
+    linked = {row[0] for row in result.all()}
 
-                    if not existing:
-                        video = Video(
-                            youtube_id=v["youtube_id"],
-                            channel_id=v["channel_id"],
-                            title=v["title"],
-                            thumbnail=v.get("thumbnail"),
-                            published_at=v.get("published_at"),
-                            channel_title=v.get("channel_title"),
-                        )
-                        db.add(video)
-                        await db.flush()
-
-                        # Create UserVideo entry
-                        uv = UserVideo(user_id=user_id, video_id=video.id)
-                        db.add(uv)
-                        new_count += 1
-                    else:
-                        # Check if user already has this video
-                        uv_result = await db.execute(
-                            select(UserVideo).where(
-                                UserVideo.user_id == user_id,
-                                UserVideo.video_id == existing.id,
-                            )
-                        )
-                        if not uv_result.scalar_one_or_none():
-                            uv = UserVideo(user_id=user_id, video_id=existing.id)
-                            db.add(uv)
-                            new_count += 1
-
-            await db.commit()
-            logger.info(f"Sync complete for user {user_id}: {new_count} new videos")
-
-        except Exception as e:
-            logger.error(f"Sync failed for user {user_id}: {e}")
-            await db.rollback()
+    new_links = [UserVideo(user_id=user_id, video_id=vid) for vid in video_ids if vid not in linked]
+    db.add_all(new_links)
+    await db.flush()
+    return len(new_links)
 
 
 @router.get("/{youtube_id}/transcript")

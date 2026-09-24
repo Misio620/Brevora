@@ -80,10 +80,16 @@ export function useProcessVideo() {
   })
 }
 
+export interface SyncResult {
+  status: string
+  new_videos: number
+  failed_channels: number
+}
+
 export function useSyncVideos() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: () => api.post<{ status: string; new_videos: number }>('/videos/sync'),
+    mutationFn: () => api.post<SyncResult>('/videos/sync'),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['videos'] })
     },

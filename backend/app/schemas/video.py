@@ -50,3 +50,4 @@ class ProcessResponse(BaseModel):
 class SyncResponse(BaseModel):
     status: str
     new_videos: int = 0
+    failed_channels: int = 0
