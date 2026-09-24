@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useVideo, useUpdateMetadata, useProcessVideo } from '@/hooks/useVideos'
 import SummaryDisplay from '@/components/video/SummaryDisplay'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import DemoBanner from '@/components/common/DemoBanner'
 
 export default function VideoDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -79,6 +80,7 @@ export default function VideoDetailPage() {
 
   return (
     <div id="main-content" className="min-h-screen bg-transparent">
+      <DemoBanner />
       {/* Header */}
       <div className="glass-card-strong border-b border-slate-700/50">
         <div className="mx-auto max-w-4xl px-6 py-5">

@@ -2,6 +2,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useSyncVideos } from '@/hooks/useVideos'
 import { useToast } from '@/components/common/Toast'
 import { logout } from '@/lib/auth'
+import { DEMO_MODE } from '@/lib/demoMode'
 
 export default function TopBar() {
   const { user } = useAuth()
@@ -15,6 +16,10 @@ export default function TopBar() {
   }
 
   const handleSync = () => {
+    if (DEMO_MODE) {
+      toast('Demo 模式使用預先生成的影片，不會連線 YouTube 同步', 'info')
+      return
+    }
     syncMutation.mutate(undefined, {
       onSuccess: ({ new_videos, failed_channels }) => {
         const summary = new_videos > 0 ? `同步完成，新增 ${new_videos} 部影片` : '已是最新，沒有新影片'
@@ -70,13 +75,15 @@ export default function TopBar() {
               {user?.display_name?.charAt(0) || '?'}
             </div>
           )}
-          <button
-            onClick={handleLogout}
-            aria-label="登出帳號"
-            className="rounded px-2 py-1 text-xs text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
-          >
-            登出
-          </button>
+          {!DEMO_MODE && (
+            <button
+              onClick={handleLogout}
+              aria-label="登出帳號"
+              className="rounded px-2 py-1 text-xs text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
+            >
+              登出
+            </button>
+          )}
         </div>
       </div>
     </header>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from '@/components/layout/TopBar'
+import DemoBanner from '@/components/common/DemoBanner'
 import Sidebar from '@/components/layout/Sidebar'
 import VideoGrid from '@/components/video/VideoGrid'
 import ChannelManager from '@/components/channel/ChannelManager'
@@ -48,6 +49,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex h-screen flex-col bg-transparent">
+      <DemoBanner />
       <TopBar />
 
       {/* Mobile filter button */}
