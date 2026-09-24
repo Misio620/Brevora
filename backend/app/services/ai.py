@@ -58,6 +58,8 @@ TRANSLATE_PROMPT = """請將以下 YouTube 影片標題翻譯成繁體中文。
 翻譯："""
 
 _client: genai.Client | None = None
+# Model that answered the latest call; informational only (used by the demo data script)
+last_model_used: str | None = None
 
 
 def _get_client() -> genai.Client:
@@ -77,6 +79,7 @@ def _get_client() -> genai.Client:
 
 async def _generate(contents, config: types.GenerateContentConfig | None = None) -> str:
     """Calls the primary model, falling back to the secondary one on any error."""
+    global last_model_used
     config = config or types.GenerateContentConfig()
     # No tools are used; disabling AFC also silences the SDK's per-call warning
     config.automatic_function_calling = types.AutomaticFunctionCallingConfig(disable=True)
@@ -90,6 +93,7 @@ async def _generate(contents, config: types.GenerateContentConfig | None = None)
             )
             if not response.text:
                 raise RuntimeError(f"Empty response from {model}")
+            last_model_used = model
             return response.text
         except Exception as e:
             logger.warning(f"Gemini model {model} failed: {e}")
