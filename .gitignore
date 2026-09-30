@@ -39,3 +39,6 @@ Thumbs.db
 
 # Local database backups
 *.sql
+
+# Local review logs (daily-review skill)
+outputs/
