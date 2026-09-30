@@ -36,3 +36,6 @@ frontend/dev.log
 # OS
 .DS_Store
 Thumbs.db
+
+# Local database backups
+*.sql

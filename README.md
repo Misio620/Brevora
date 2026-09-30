@@ -127,7 +127,7 @@ VITE_DEMO_MODE=true pnpm dev
 <details>
 <summary>完整版（Google 登入 + 後端）</summary>
 
-需要：Node.js 20+、Python 3.11+、PostgreSQL、pnpm，以及 Google Cloud 專案（YouTube Data API v3 + OAuth 2.0）與 Gemini API key。設定步驟見 [docs/google_setup.md](docs/google_setup.md)。
+需要：Node.js `^20.19.0 || >=22.12.0`、Python 3.11+、PostgreSQL、pnpm，以及 Google Cloud 專案（YouTube Data API v3 + OAuth 2.0）與 Gemini API key。設定步驟見 [docs/google_setup.md](docs/google_setup.md)。
 
 1. 安裝後端（在專案根目錄執行，會建立 `backend/venv`，Windows / macOS / Linux 都適用）：
 
