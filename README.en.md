@@ -46,7 +46,7 @@ My old routine was to pick a few shows I cared about most each week, watch them 
 ## Results
 
 - I have used it for about a month, 2–3 times a week.
-- I went from "watch when I have time, otherwise let it pile up" to focusing on three key takeaways a week, with my time concentrated on what I actually care about.
+- I went from "watch when I have time, otherwise let it pile up" to focusing on three ideas a week, with my time concentrated on what I actually care about.
 - I am the only user so far. No other user research has been done.
 
 ## My role
