@@ -41,8 +41,8 @@ Google OAuth 的 redirect_uri 由 `backend/.env` 的 `BACKEND_URL` 組成（`bac
 - [ ] Google OAuth 同意畫面名稱需到 Google Cloud Console 手動改成 Brevora
 - [ ] 部署上線時設定後端 log 輸出到檔案
 
-## 已知問題
+## 相依套件
 
-- **`requirements.txt` 只設下限（`>=`）**：重建 venv 會裝到最新版。2026-09-30 重建時升到
-  SQLAlchemy 2.1、Starlette 1.x、protobuf 7；2026-09-30 已實測 Google 登入、同步影片、顯示既有筆記與產生 AI 筆記皆正常。
-  日後重建若出現相依套件錯誤，先比對版本，必要時再討論是否鎖定版本。
+- `backend/requirements.txt` 以 `==` 鎖定直接依賴（2026-09-30），版本為實測 Google 登入、同步影片、
+  顯示既有筆記與產生 AI 筆記皆正常的組合；間接依賴未鎖定。
+- 升級套件時手動改版本號，並重新實測上述流程，不要改回 `>=`。
