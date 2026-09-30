@@ -4,7 +4,9 @@
 
 The name comes from the Latin *brevis* (brief) + *ora* (time).
 
-**[Live demo (no login)](DEMO_URL)** · [Decision log (Chinese)](docs/decisions.md) · [Design process (Chinese)](docs/design-process/README.md) · [中文](README.md)
+**[Live demo (no login)](https://brevora-beta.vercel.app/)** · [Decision log (Chinese)](docs/decisions.md) · [Design process (Chinese)](docs/design-process/README.md) · [中文](README.md)
+
+![Brevora feed: videos from pinned channels with AI note previews](docs/screenshots/desktop-feed.png)
 
 ---
 
@@ -40,6 +42,15 @@ My old routine was to pick a few shows I cared about most each week, watch them 
 
 4. Click any timestamp to open the original video at that second, to verify a point or go deeper.
 5. Manage videos with read status, favorites, channel filters and search.
+
+![Show notes page: every timestamp links to that second of the original video](docs/screenshots/desktop-notes.png)
+
+On mobile:
+
+<p>
+  <img src="docs/screenshots/mobile-feed.png" alt="Feed on mobile" width="280">
+  <img src="docs/screenshots/mobile-notes.png" alt="Show notes on mobile, with clickable timestamps" width="280">
+</p>
 
 **Why this structure?** I set the requirements and settled the format in discussion with Claude. Five points are usually enough to see the whole video; timestamps link back to the source so every point can be checked.
 

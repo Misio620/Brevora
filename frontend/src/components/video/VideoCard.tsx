@@ -23,11 +23,12 @@ function summaryExcerpt(summary: string, maxLength = 120): string {
   return text.length > maxLength ? `${text.slice(0, maxLength)}…` : text
 }
 
+// Opaque badges: they sit on top of busy thumbnails, and each pair keeps at least 4.5:1 contrast
 const STATUS_STYLES: Record<string, { label: string; className: string }> = {
-  done: { label: '完成', className: 'bg-emerald-500/20 text-emerald-400' },
-  processing: { label: '處理中', className: 'bg-amber-500/20 text-amber-400' },
-  error: { label: '錯誤', className: 'bg-red-500/20 text-red-400' },
-  pending: { label: '待處理', className: 'bg-slate-700 text-slate-400' },
+  done: { label: '完成', className: 'bg-emerald-700 text-white' },
+  processing: { label: '處理中', className: 'bg-amber-400 text-slate-950' },
+  error: { label: '錯誤', className: 'bg-red-700 text-white' },
+  pending: { label: '待處理', className: 'bg-slate-700 text-slate-100' },
 }
 
 export default function VideoCard({ video, onClick }: VideoCardProps) {
@@ -74,7 +75,7 @@ export default function VideoCard({ video, onClick }: VideoCardProps) {
             </svg>
           </div>
         )}
-        <span className={`absolute left-1.5 top-1.5 rounded px-1.5 py-0.5 text-[10px] font-medium ${statusInfo.className}`}>
+        <span className={`absolute left-1.5 top-1.5 rounded px-1.5 py-0.5 text-[10px] font-medium shadow-md shadow-black/40 ${statusInfo.className}`}>
           {statusInfo.label}
         </span>
       </div>
