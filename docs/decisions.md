@@ -18,7 +18,7 @@
 
 | 選項 | 問題 |
 |------|------|
-| 完整部署（FastAPI + PostgreSQL + Google 登入） | 訪客要用 Google 帳號登入並授權 YouTube 權限，對只想花一分鐘看作品的面試官門檻太高 |
+| 完整部署（FastAPI + PostgreSQL + Google 登入） | 讀取訂閱需要 `youtube.readonly` 權限，App 通過 Google 驗證前只有 Test users 名單內的帳號能登入（見 [google_setup.md](google_setup.md)），面試官根本無法進入；就算通過驗證，要求授權 YouTube 帳號對只想花一分鐘看作品的人門檻也太高 |
 | Supabase 免費方案當資料庫 | 免費專案一週沒有資料庫活動就會被暫停（[官方文件](https://supabase.com/docs/guides/platform/free-project-pausing)）。履歷連結的點擊頻率遠低於一週一次，面試官點開時很可能剛好遇上暫停 |
 | **前端 Demo 模式 + 預先生成的真實資料（採用）** | 無法即時為新影片生成筆記 |
 
