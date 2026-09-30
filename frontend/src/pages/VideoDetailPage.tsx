@@ -144,7 +144,7 @@ export default function VideoDetailPage() {
               <p className="mt-1 text-xs text-slate-500">約需 30 秒到數分鐘，影片越長越久</p>
             </div>
           ) : video.summary ? (
-            <SummaryDisplay summary={video.summary} />
+            <SummaryDisplay summary={video.summary} youtubeId={video.youtube_id} />
           ) : video.processing_status === 'error' ? (
             <div className="flex flex-col items-center py-12 text-center">
               <p className="mb-2 text-sm text-red-400">
