@@ -64,6 +64,7 @@ Full details are in the [decision log](docs/decisions.md) (Chinese).
 3. **Gemini retired the old models, so model names are now configurable.** Added a fallback model and retries, and recorded the quota limits hit during testing (requests per day, tokens per minute).
 4. **Known issue: summaries are stored per user.** If N users open the same video, the AI cost is N times. Planned as the next step.
 5. **Fix trust-breaking bugs first.** For example, "Sync" always reported 0 new videos, and AI notes rendered without formatting.
+6. **Timestamps drift on long videos, so creator chapters anchor them.** Checking every timestamp against the creator's chapters showed drift of tens of minutes on videos over two hours. The chapters are now given to Gemini as anchors, and the key points must span the whole video.
 
 ## About the demo
 
