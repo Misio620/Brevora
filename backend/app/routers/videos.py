@@ -1,10 +1,10 @@
 import asyncio
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
-from sqlalchemy import select, func, and_, or_
+from sqlalchemy import select, func, and_, or_, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
@@ -27,6 +27,8 @@ router = APIRouter(prefix="/videos", tags=["videos"])
 settings = get_settings()
 
 SYNC_CONCURRENCY = 5
+# A job still "processing" after this long is assumed lost (e.g. the server restarted mid-run)
+STALE_PROCESSING_AFTER = timedelta(minutes=15)
 
 
 def _video_to_response(video: Video, uv: UserVideo | None) -> VideoWithUserState:
@@ -40,10 +42,10 @@ def _video_to_response(video: Video, uv: UserVideo | None) -> VideoWithUserState
         is_read=uv.is_read if uv else False,
         is_favorite=uv.is_favorite if uv else False,
         note=uv.note if uv else "",
-        processing_status=uv.processing_status if uv else "pending",
-        summary=uv.summary if uv else None,
-        translated_title=uv.translated_title if uv else None,
-        error_message=uv.error_message if uv else None,
+        processing_status=video.processing_status,
+        summary=video.summary,
+        translated_title=video.translated_title,
+        error_message=video.error_message,
     )
 
 
@@ -83,9 +85,9 @@ async def get_feed(
         return VideoFeedResponse(videos=[], total=0, page=page, per_page=per_page, has_more=False)
 
     if status == "done":
-        query = query.where(UserVideo.processing_status == "done")
+        query = query.where(Video.processing_status == "done")
     elif status == "pending":
-        query = query.where(or_(UserVideo.processing_status.is_(None), UserVideo.processing_status != "done"))
+        query = query.where(Video.processing_status != "done")
 
     if favorites:
         query = query.where(UserVideo.is_favorite.is_(True))
@@ -96,8 +98,8 @@ async def get_feed(
             or_(
                 Video.title.ilike(search_term),
                 Video.channel_title.ilike(search_term),
-                UserVideo.translated_title.ilike(search_term),
-                UserVideo.summary.ilike(search_term),
+                Video.translated_title.ilike(search_term),
+                Video.summary.ilike(search_term),
             )
         )
 
@@ -195,48 +197,59 @@ async def process_video(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Trigger async AI summary generation."""
-    # Find the video
-    video_result = await db.execute(select(Video).where(Video.youtube_id == youtube_id))
-    video = video_result.scalar_one_or_none()
-    if not video:
-        raise HTTPException(status_code=404, detail="Video not found")
-
-    # Find or create UserVideo, mark as processing
-    uv_result = await db.execute(
-        select(UserVideo).where(
-            UserVideo.user_id == current_user.id,
-            UserVideo.video_id == video.id,
+    """Trigger async AI note generation. Notes are shared, so each video is generated once."""
+    now = datetime.now(timezone.utc)
+    # Claim the job atomically: when several users open the same video at once,
+    # only one request moves it to "processing" and starts a Gemini call
+    claim = await db.execute(
+        update(Video)
+        .where(
+            Video.youtube_id == youtube_id,
+            or_(
+                Video.processing_status.in_(("pending", "error")),
+                and_(
+                    Video.processing_status == "processing",
+                    or_(
+                        Video.processing_started_at.is_(None),
+                        Video.processing_started_at < now - STALE_PROCESSING_AFTER,
+                    ),
+                ),
+            ),
         )
+        .values(processing_status="processing", processing_started_at=now, error_message=None)
+        .returning(Video.id, Video.title)
     )
-    uv = uv_result.scalar_one_or_none()
-
-    if not uv:
-        uv = UserVideo(user_id=current_user.id, video_id=video.id, processing_status="processing")
-        db.add(uv)
-    else:
-        uv.processing_status = "processing"
-        uv.error_message = None
-
+    claimed = claim.first()
     await db.commit()
 
-    # Enqueue background task
+    if not claimed:
+        # Already done, or another request is generating it right now
+        result = await db.execute(select(Video.processing_status).where(Video.youtube_id == youtube_id))
+        current_status = result.scalar_one_or_none()
+        if current_status is None:
+            raise HTTPException(status_code=404, detail="Video not found")
+        return ProcessResponse(status=current_status, youtube_id=youtube_id)
+
     background_tasks.add_task(
         _run_ai_processing,
         user_id=str(current_user.id),
-        video_id=str(video.id),
+        video_id=claimed.id,
         youtube_id=youtube_id,
-        title=video.title,
+        title=claimed.title,
+        claimed_at=now,
     )
-
     return ProcessResponse(status="processing", youtube_id=youtube_id)
 
 
-async def _run_ai_processing(user_id: str, video_id: str, youtube_id: str, title: str):
-    """Background task to generate AI summary."""
+async def _run_ai_processing(user_id: str, video_id: uuid.UUID, youtube_id: str, title: str, claimed_at: datetime):
+    """Background task that generates the shared AI note for one video."""
     async with async_session() as db:
+        # Only the run that holds the claim may write, so a run that was declared
+        # stale and superseded cannot overwrite the newer result
+        this_run = and_(Video.id == video_id, Video.processing_started_at == claimed_at)
         try:
-            # Creator chapters anchor the note's timestamps; notes still work without them
+            # Creator chapters anchor the note's timestamps; notes still work without them.
+            # They are read with the OAuth token of the user who asked for the note.
             chapters = []
             try:
                 user = await db.get(User, uuid.UUID(user_id))
@@ -245,42 +258,30 @@ async def _run_ai_processing(user_id: str, video_id: str, youtube_id: str, title
                 logger.warning(f"Could not fetch chapters for {youtube_id}: {e}")
 
             summary = await ai.generate_summary(youtube_id, chapters)
-
-            # Translate title
             translated_title = await ai.translate_title(title)
 
-            # Update DB
-            result = await db.execute(
-                select(UserVideo).where(
-                    UserVideo.user_id == user_id,
-                    UserVideo.video_id == video_id,
+            await db.execute(
+                update(Video)
+                .where(this_run)
+                .values(
+                    processing_status="done",
+                    summary=summary.text,
+                    translated_title=translated_title,
+                    summary_model=summary.model,
+                    summary_chapters=summary.chapters_used,
+                    summary_prompt_version=summary.prompt_version,
+                    processed_at=datetime.now(timezone.utc),
                 )
             )
-            uv = result.scalar_one_or_none()
-            if uv:
-                uv.processing_status = "done"
-                uv.summary = summary.text
-                uv.translated_title = translated_title
-                uv.processed_at = datetime.now(timezone.utc)
-                uv.updated_at = datetime.now(timezone.utc)
-
             await db.commit()
-            logger.info(f"AI processing complete for {youtube_id}")
+            logger.info(f"AI processing complete for {youtube_id} with {summary.model}")
 
         except Exception as e:
             logger.error(f"AI processing failed for {youtube_id}: {e}")
-            result = await db.execute(
-                select(UserVideo).where(
-                    UserVideo.user_id == user_id,
-                    UserVideo.video_id == video_id,
-                )
+            await db.rollback()
+            await db.execute(
+                update(Video).where(this_run).values(processing_status="error", error_message=str(e))
             )
-            uv = result.scalar_one_or_none()
-            if uv:
-                uv.processing_status = "error"
-                uv.error_message = str(e)
-                uv.updated_at = datetime.now(timezone.utc)
-
             await db.commit()
 
 
