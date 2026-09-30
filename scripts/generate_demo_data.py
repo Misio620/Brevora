@@ -29,10 +29,12 @@ sys.path.insert(0, str(REPO_ROOT / "backend"))
 
 from app.config import get_settings  # noqa: E402
 from app.services import ai  # noqa: E402
+from app.services.youtube import parse_chapters  # noqa: E402
 
 OUTPUT = REPO_ROOT / "frontend" / "src" / "demo" / "demo-data.json"
 YOUTUBE_API = "https://www.googleapis.com/youtube/v3"
-NOTE_FIELDS = ("summary", "translated_title", "model", "generated_at")
+# How each note was produced; chapters_used is the number of creator chapters given to Gemini
+NOTE_FIELDS = ("summary", "translated_title", "model", "chapters_used", "generated_at")
 
 # Three channels, two videos each
 DEMO_VIDEOS = [
@@ -83,6 +85,8 @@ def fetch_metadata(api_key: str, video_ids: list[str]) -> tuple[list[dict], list
                 "thumbnail": best_thumbnail(snippet["thumbnails"]),
                 "published_at": snippet["publishedAt"],
                 "duration_seconds": parse_duration(items[vid]["contentDetails"]["duration"]),
+                # Used for generation only; fields starting with "_" are not written out
+                "_chapters": parse_chapters(snippet.get("description")),
             })
 
         channel_ids = list(dict.fromkeys(v["channel_id"] for v in videos))
@@ -109,10 +113,17 @@ def load_existing() -> dict[str, dict]:
 
 def write_output(videos: list[dict], channels: list[dict]) -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    public = []
+    for video in videos:
+        video = {k: v for k, v in video.items() if not k.startswith("_")}
+        # Notes generated before chapter support were made without chapters
+        if video.get("summary") and video.get("chapters_used") is None:
+            video["chapters_used"] = 0
+        public.append(video)
     data = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "channels": channels,
-        "videos": videos,
+        "videos": public,
     }
     OUTPUT.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -149,7 +160,8 @@ async def main() -> None:
         print(f"{label} generating...", flush=True)
         started = time.monotonic()
         try:
-            video["summary"] = await ai.generate_summary(video["youtube_id"])
+            video["summary"] = await ai.generate_summary(video["youtube_id"], video["_chapters"])
+            video["chapters_used"] = len(video["_chapters"])
             # Records the model that actually answered, which may be the fallback
             video["model"] = ai.last_model_used
             video["translated_title"] = await ai.translate_title(video["title"])
