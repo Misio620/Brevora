@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthContext, useAuthQuery } from '@/hooks/useAuth'
 import { ToastProvider } from '@/components/common/Toast'
 import { isAuthenticated } from '@/lib/auth'
+import { DEMO_MODE } from '@/lib/demoMode'
 import LoginPage from '@/pages/LoginPage'
 import CallbackPage from '@/pages/CallbackPage'
 import DashboardPage from '@/pages/DashboardPage'
@@ -62,8 +63,8 @@ export default function App() {
           </a>
           <AuthProvider>
             <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/callback" element={<CallbackPage />} />
+              <Route path="/login" element={DEMO_MODE ? <Navigate to="/" replace /> : <LoginPage />} />
+              <Route path="/callback" element={DEMO_MODE ? <Navigate to="/" replace /> : <CallbackPage />} />
               <Route
                 path="/"
                 element={

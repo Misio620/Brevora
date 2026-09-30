@@ -1,4 +1,5 @@
 import { setToken, clearToken } from './api'
+import { DEMO_MODE } from './demoMode'
 
 export function handleCallback(): string | null {
   const params = new URLSearchParams(window.location.search)
@@ -16,5 +17,6 @@ export function logout() {
 }
 
 export function isAuthenticated(): boolean {
+  if (DEMO_MODE) return true
   return !!localStorage.getItem('token')
 }

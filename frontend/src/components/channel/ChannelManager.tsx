@@ -54,6 +54,7 @@ export default function ChannelManager({ isOpen, onClose }: ChannelManagerProps)
           <h2 className="text-lg font-semibold text-white">管理訂閱</h2>
           <button
             onClick={onClose}
+            aria-label="關閉"
             className="rounded-full p-1 text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

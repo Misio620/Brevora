@@ -12,6 +12,9 @@ class Settings(BaseSettings):
 
     # Google Gemini API
     GOOGLE_API_KEY: str = ""
+    # Gemini retires model versions; keep names configurable instead of hardcoded
+    GEMINI_MODEL: str = "gemini-3.6-flash"
+    GEMINI_FALLBACK_MODEL: str = "gemini-3.5-flash"
 
     # JWT
     JWT_SECRET: str = "change-me-in-production"

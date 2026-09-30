@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 
 export interface VideoWithState {
@@ -47,6 +47,7 @@ export function useVideoFeed(params: FeedParams = {}) {
     queryKey: ['videos', 'feed', params],
     queryFn: () => api.get<FeedResponse>(`/videos/feed?${query}`),
     staleTime: 1000 * 60,
+    placeholderData: keepPreviousData,
   })
 }
 
@@ -80,10 +81,16 @@ export function useProcessVideo() {
   })
 }
 
+export interface SyncResult {
+  status: string
+  new_videos: number
+  failed_channels: number
+}
+
 export function useSyncVideos() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: () => api.post<{ status: string; new_videos: number }>('/videos/sync'),
+    mutationFn: () => api.post<SyncResult>('/videos/sync'),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['videos'] })
     },

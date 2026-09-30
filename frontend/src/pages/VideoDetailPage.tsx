@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useVideo, useUpdateMetadata, useProcessVideo } from '@/hooks/useVideos'
 import SummaryDisplay from '@/components/video/SummaryDisplay'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import DemoBanner from '@/components/common/DemoBanner'
 
 export default function VideoDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -58,6 +59,12 @@ export default function VideoDetailPage() {
     })
   }
 
+  // Opened from a shared link or new tab: there is no in-app page to go back to
+  const handleBack = () => {
+    if ((window.history.state?.idx ?? 0) > 0) navigate(-1)
+    else navigate('/')
+  }
+
   const handleRetry = () => {
     processMutation.mutate(video.youtube_id)
   }
@@ -73,12 +80,13 @@ export default function VideoDetailPage() {
 
   return (
     <div id="main-content" className="min-h-screen bg-transparent">
+      <DemoBanner />
       {/* Header */}
       <div className="glass-card-strong border-b border-slate-700/50">
         <div className="mx-auto max-w-4xl px-6 py-5">
           <div className="mb-3 flex items-center justify-between">
             <button
-              onClick={() => navigate(-1)}
+              onClick={handleBack}
               aria-label="返回上一頁"
               className="flex items-center gap-1 text-sm text-slate-400 transition hover:text-slate-200"
             >
@@ -133,10 +141,10 @@ export default function VideoDetailPage() {
             <div className="flex flex-col items-center py-12 text-center">
               <LoadingSpinner className="mb-4" />
               <p className="text-sm text-slate-400">正在生成節目筆記，請稍候...</p>
-              <p className="mt-1 text-xs text-slate-500">通常需要 10-30 秒</p>
+              <p className="mt-1 text-xs text-slate-500">約需 30 秒到數分鐘，影片越長越久</p>
             </div>
           ) : video.summary ? (
-            <SummaryDisplay summary={video.summary} />
+            <SummaryDisplay summary={video.summary} youtubeId={video.youtube_id} />
           ) : video.processing_status === 'error' ? (
             <div className="flex flex-col items-center py-12 text-center">
               <p className="mb-2 text-sm text-red-400">
