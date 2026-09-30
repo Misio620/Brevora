@@ -44,5 +44,5 @@ Google OAuth 的 redirect_uri 由 `backend/.env` 的 `BACKEND_URL` 組成（`bac
 ## 已知問題
 
 - **`requirements.txt` 只設下限（`>=`）**：重建 venv 會裝到最新版。2026-09-30 重建時升到
-  SQLAlchemy 2.1、Starlette 1.x、protobuf 7，只驗證過啟動、`/` 回應與 ORM 查詢；登入、抓影片、AI 筆記流程尚未實測。
-  出現相依套件錯誤時先比對版本，必要時再討論是否鎖定版本。
+  SQLAlchemy 2.1、Starlette 1.x、protobuf 7；2026-09-30 已實測 Google 登入、同步影片、顯示既有筆記與產生 AI 筆記皆正常。
+  日後重建若出現相依套件錯誤，先比對版本，必要時再討論是否鎖定版本。
