@@ -5,6 +5,7 @@ downloads audio or scrapes captions (YouTube blocks both from cloud hosts).
 Model names come from settings because Gemini retires model versions over time.
 """
 import logging
+from dataclasses import dataclass
 
 from google import genai
 from google.genai import types
@@ -67,9 +68,19 @@ TRANSLATE_PROMPT = """請將以下 YouTube 影片標題翻譯成繁體中文。
 
 翻譯："""
 
+# Bump when SUMMARY_PROMPT or CHAPTERS_PROMPT changes, so older notes can be found and regenerated
+PROMPT_VERSION = "2026-09-30"
+
+
+@dataclass
+class Summary:
+    text: str
+    model: str  # the model that actually answered, which may be the fallback
+    chapters_used: int
+    prompt_version: str = PROMPT_VERSION
+
+
 _client: genai.Client | None = None
-# Model that answered the latest call; informational only (used by the demo data script)
-last_model_used: str | None = None
 
 
 def _get_client() -> genai.Client:
@@ -91,9 +102,8 @@ def _get_client() -> genai.Client:
     return _client
 
 
-async def _generate(contents, config: types.GenerateContentConfig | None = None) -> str:
-    """Calls the primary model, falling back to the secondary one on any error."""
-    global last_model_used
+async def _generate(contents, config: types.GenerateContentConfig | None = None) -> tuple[str, str]:
+    """Calls the primary model, falling back to the secondary one on any error. Returns (text, model)."""
     config = config or types.GenerateContentConfig()
     # No tools are used; disabling AFC also silences the SDK's per-call warning
     config.automatic_function_calling = types.AutomaticFunctionCallingConfig(disable=True)
@@ -107,8 +117,7 @@ async def _generate(contents, config: types.GenerateContentConfig | None = None)
             )
             if not response.text:
                 raise RuntimeError(f"Empty response from {model}")
-            last_model_used = model
-            return response.text
+            return response.text, model
         except Exception as e:
             logger.warning(f"Gemini model {model} failed: {e}")
             last_error = e
@@ -138,7 +147,7 @@ def _chapters_prompt(chapters: list[tuple[int, str]]) -> str:
     return CHAPTERS_PROMPT.format(chapters=lines)
 
 
-async def generate_summary(video_id: str, chapters: list[tuple[int, str]] | None = None) -> str:
+async def generate_summary(video_id: str, chapters: list[tuple[int, str]] | None = None) -> Summary:
     """Generates Markdown video notes by letting Gemini watch the YouTube video.
 
     Creator chapters, when the video has them, anchor the timestamps: on videos over
@@ -155,13 +164,14 @@ async def generate_summary(video_id: str, chapters: list[tuple[int, str]] | None
     )
     # Low media resolution keeps long podcasts within the context window; notes rely mostly on audio
     config = types.GenerateContentConfig(media_resolution=types.MediaResolution.MEDIA_RESOLUTION_LOW)
-    return (await _generate(contents, config)).strip()
+    text, model = await _generate(contents, config)
+    return Summary(text=text.strip(), model=model, chapters_used=len(chapters or []))
 
 
 async def translate_title(title: str) -> str | None:
     """Translates a video title to Traditional Chinese. Returns None if it already contains CJK."""
     if _has_cjk(title):
         return None
-    translated = (await _generate(TRANSLATE_PROMPT.format(title=title))).strip()
+    translated = (await _generate(TRANSLATE_PROMPT.format(title=title)))[0].strip()
     logger.info(f"Title translation: {title} -> {translated}")
     return translated

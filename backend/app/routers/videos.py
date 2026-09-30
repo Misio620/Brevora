@@ -259,7 +259,7 @@ async def _run_ai_processing(user_id: str, video_id: str, youtube_id: str, title
             uv = result.scalar_one_or_none()
             if uv:
                 uv.processing_status = "done"
-                uv.summary = summary
+                uv.summary = summary.text
                 uv.translated_title = translated_title
                 uv.processed_at = datetime.now(timezone.utc)
                 uv.updated_at = datetime.now(timezone.utc)
