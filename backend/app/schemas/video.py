@@ -1,5 +1,8 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+# Personal notes are free text; the frontend enforces the same limit
+NOTE_MAX_LENGTH = 5000
 
 
 class VideoInfo(BaseModel):
@@ -39,7 +42,7 @@ class VideoFeedResponse(BaseModel):
 class MetadataUpdate(BaseModel):
     is_read: bool | None = None
     is_favorite: bool | None = None
-    note: str | None = None
+    note: str | None = Field(default=None, max_length=NOTE_MAX_LENGTH)
 
 
 class ProcessResponse(BaseModel):

@@ -3,6 +3,7 @@
 // Per-visitor state (read, favorite, pinned channels) lives in this browser's localStorage.
 import demoData from '@/demo/demo-data.json'
 import { DEMO_STORAGE_KEY } from './demoMode'
+import { NOTE_MAX_LENGTH, hasNote } from '@/hooks/useVideos'
 
 interface DemoVideo {
   youtube_id: string
@@ -89,9 +90,10 @@ function feed(params: URLSearchParams) {
   if (status === 'done') result = result.filter(v => v.processing_status === 'done')
   else if (status === 'pending') result = result.filter(v => v.processing_status !== 'done')
   if (params.get('favorites') === 'true') result = result.filter(v => v.is_favorite)
+  if (params.get('has_note') === 'true') result = result.filter(hasNote)
   if (search) {
     result = result.filter(v =>
-      [v.title, v.channel_title, v.translated_title, v.summary].some(text => text?.toLowerCase().includes(search)),
+      [v.title, v.channel_title, v.translated_title, v.summary, v.note].some(text => text?.toLowerCase().includes(search)),
     )
   }
 
@@ -135,6 +137,9 @@ export async function demoRequest(method: string, path: string, body?: string): 
   if (route === 'POST /videos/sync') return { status: 'done', new_videos: 0, failed_channels: 0 }
   if ((match = route.match(/^PATCH \/videos\/(.+)\/metadata$/))) {
     const video = findVideo(match[1])
+    if (typeof data.note === 'string' && data.note.length > NOTE_MAX_LENGTH) {
+      throw new Error(`筆記最多 ${NOTE_MAX_LENGTH} 字`)
+    }
     const current = { ...DEFAULT_STATE, ...state.videos[video.youtube_id] }
     for (const key of ['is_read', 'is_favorite', 'note'] as const) {
       if (data[key] !== undefined && data[key] !== null) Object.assign(current, { [key]: data[key] })

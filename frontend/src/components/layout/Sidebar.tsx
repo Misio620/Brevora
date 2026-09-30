@@ -3,6 +3,7 @@ import { usePinnedChannels } from '@/hooks/useChannels'
 interface Filters {
   status: string
   favorites: boolean
+  hasNote: boolean
   channel: string
   search: string
 }
@@ -22,7 +23,7 @@ export default function Sidebar({ filters, onFilterChange, onOpenManager, mobile
   }
 
   const clearFilters = () => {
-    onFilterChange({ status: 'all', favorites: false, channel: 'all', search: '' })
+    onFilterChange({ status: 'all', favorites: false, hasNote: false, channel: 'all', search: '' })
   }
 
   const content = (
@@ -76,7 +77,7 @@ export default function Sidebar({ filters, onFilterChange, onOpenManager, mobile
         </div>
       </div>
 
-      {/* Favorites */}
+      {/* Favorites and own notes */}
       <div className="mb-4">
         <label className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-slate-800/50">
           <input
@@ -86,6 +87,15 @@ export default function Sidebar({ filters, onFilterChange, onOpenManager, mobile
             className="accent-blue-500"
           />
           <span className="text-slate-200">僅顯示收藏</span>
+        </label>
+        <label className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-slate-800/50">
+          <input
+            type="checkbox"
+            checked={filters.hasNote}
+            onChange={e => update('hasNote', e.target.checked)}
+            className="accent-blue-500"
+          />
+          <span className="text-slate-200">僅顯示有筆記</span>
         </label>
       </div>
 

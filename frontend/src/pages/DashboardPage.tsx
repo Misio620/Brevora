@@ -15,6 +15,7 @@ export default function DashboardPage() {
   const [filters, setFilters] = useState({
     status: 'all',
     favorites: false,
+    hasNote: false,
     channel: 'all',
     search: '',
   })
@@ -45,7 +46,7 @@ export default function DashboardPage() {
     navigate(`/video/${video.youtube_id}`)
   }
 
-  const hasActiveFilters = filters.status !== 'all' || filters.favorites || filters.channel !== 'all' || filters.search !== ''
+  const hasActiveFilters = filters.status !== 'all' || filters.favorites || filters.hasNote || filters.channel !== 'all' || filters.search !== ''
 
   return (
     <div className="flex h-screen flex-col bg-transparent">

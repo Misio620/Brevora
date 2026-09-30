@@ -56,6 +56,7 @@ async def get_feed(
     channel_id: str | None = None,
     status: str | None = None,
     favorites: bool = False,
+    has_note: bool = False,
     search: str | None = None,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -92,6 +93,10 @@ async def get_feed(
     if favorites:
         query = query.where(UserVideo.is_favorite.is_(True))
 
+    # A whitespace-only note counts as no note (trim() would miss newlines)
+    if has_note:
+        query = query.where(UserVideo.note.regexp_match(r"\S"))
+
     if search:
         search_term = f"%{search}%"
         query = query.where(
@@ -100,6 +105,7 @@ async def get_feed(
                 Video.channel_title.ilike(search_term),
                 Video.translated_title.ilike(search_term),
                 Video.summary.ilike(search_term),
+                UserVideo.note.ilike(search_term),
             )
         )
 

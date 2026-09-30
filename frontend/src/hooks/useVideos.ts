@@ -31,7 +31,15 @@ interface FeedParams {
   channel_id?: string
   status?: string
   favorites?: boolean
+  has_note?: boolean
   search?: string
+}
+
+// Same limit as NOTE_MAX_LENGTH in backend/app/schemas/video.py
+export const NOTE_MAX_LENGTH = 5000
+
+export function hasNote(video: Pick<VideoWithState, 'note'>) {
+  return video.note.trim() !== ''
 }
 
 export function useVideoFeed(params: FeedParams = {}) {
@@ -41,6 +49,7 @@ export function useVideoFeed(params: FeedParams = {}) {
   if (params.channel_id) query.set('channel_id', params.channel_id)
   if (params.status) query.set('status', params.status)
   if (params.favorites) query.set('favorites', 'true')
+  if (params.has_note) query.set('has_note', 'true')
   if (params.search) query.set('search', params.search)
 
   return useQuery<FeedResponse>({
@@ -66,6 +75,19 @@ export function useUpdateMetadata() {
       api.patch<VideoWithState>(`/videos/${youtubeId}/metadata`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['videos'] })
+    },
+  })
+}
+
+// Saving a note must not refetch the open video: the editor's text is the source of truth while typing
+export function useSaveNote() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ youtubeId, note }: { youtubeId: string; note: string }) =>
+      api.patch<VideoWithState>(`/videos/${youtubeId}/metadata`, { note }),
+    onSuccess: video => {
+      queryClient.setQueryData(['videos', video.youtube_id], video)
+      queryClient.invalidateQueries({ queryKey: ['videos', 'feed'] })
     },
   })
 }

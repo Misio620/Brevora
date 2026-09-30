@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useVideo, useUpdateMetadata, useProcessVideo } from '@/hooks/useVideos'
 import SummaryDisplay from '@/components/video/SummaryDisplay'
+import MyNote from '@/components/video/MyNote'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import DemoBanner from '@/components/common/DemoBanner'
 import EmptyState from '@/components/common/EmptyState'
@@ -43,7 +44,7 @@ export default function VideoDetailPage() {
     document.title = displayTitle ? `${displayTitle} — Brevora` : 'Brevora'
   }, [displayTitle])
 
-  // isPending 也涵蓋重試暫停（分頁在背景、離線），這時還不能判定失敗
+  // isPending also covers paused retries (background tab, offline): not a failure yet
   if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -52,7 +53,7 @@ export default function VideoDetailPage() {
     )
   }
 
-  // 載入失敗或影片不存在：顯示說明與返回入口，避免只剩空白頁
+  // Failed or missing video: explain and offer a way back instead of a blank page
   if (error || !video) {
     const notFound = !error || error.message === 'Video not found'
     return (
@@ -202,6 +203,8 @@ export default function VideoDetailPage() {
             </div>
           )}
         </section>
+
+        <MyNote key={video.youtube_id} youtubeId={video.youtube_id} initialNote={video.note} />
       </div>
     </div>
   )

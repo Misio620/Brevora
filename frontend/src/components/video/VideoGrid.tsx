@@ -7,6 +7,7 @@ interface VideoGridProps {
   filters: {
     status: string
     favorites: boolean
+    hasNote: boolean
     channel: string
     search: string
   }
@@ -22,6 +23,7 @@ export default function VideoGrid({ filters, page, onPageChange, onVideoSelect }
     channel_id: filters.channel !== 'all' ? filters.channel : undefined,
     status: filters.status !== 'all' ? filters.status : undefined,
     favorites: filters.favorites || undefined,
+    has_note: filters.hasNote || undefined,
     search: filters.search || undefined,
   })
 
