@@ -67,7 +67,8 @@ def _build_credentials(user) -> Credentials:
 
 def _get_youtube_service(user):
     creds = _build_credentials(user)
-    return build("youtube", "v3", credentials=creds)
+    # The discovery file cache needs oauth2client < 4.0 and only logs a warning on every build
+    return build("youtube", "v3", credentials=creds, cache_discovery=False)
 
 
 def _fetch_subscriptions(user) -> list[dict]:
