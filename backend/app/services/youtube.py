@@ -5,6 +5,7 @@ credentials as a parameter (user-scoped) instead of using a global auth module.
 """
 import asyncio
 import logging
+import re
 from datetime import datetime, timezone
 
 from google.auth.transport.requests import Request
@@ -18,6 +19,30 @@ logger = logging.getLogger(__name__)
 settings = get_settings()
 
 YOUTUBE_TOKEN_URI = "https://oauth2.googleapis.com/token"
+
+# A chapter line in a video description: "00:00 Intro", "(1:02:03) Title", "0:00 - Title"
+_CHAPTER_LINE = re.compile(r"^\s*[(\[]?((?:\d{1,2}:)?\d{1,2}:\d{2})[)\]]?\s*[-–—:|]?\s*(\S.*)$")
+
+
+def parse_chapters(description: str | None) -> list[tuple[int, str]]:
+    """Extracts creator chapters as (start_seconds, title) from a video description.
+
+    Follows YouTube's own rules for chapters: the first starts at 0:00, there are
+    at least three, and they are in ascending order. Returns [] otherwise.
+    """
+    chapters = []
+    for line in (description or "").splitlines():
+        match = _CHAPTER_LINE.match(line)
+        if match:
+            seconds = 0
+            for part in match.group(1).split(":"):
+                seconds = seconds * 60 + int(part)
+            chapters.append((seconds, match.group(2).strip()))
+
+    starts = [start for start, _ in chapters]
+    if len(chapters) < 3 or starts[0] != 0 or starts != sorted(set(starts)):
+        return []
+    return chapters
 
 
 def _build_credentials(user) -> Credentials:
@@ -117,6 +142,14 @@ def _fetch_channel_videos(user, channel_id: str, max_results: int = 20) -> list[
     return videos
 
 
+def _fetch_video_description(user, youtube_id: str) -> str | None:
+    """Fetches a video's description. Blocking."""
+    youtube = _get_youtube_service(user)
+    response = youtube.videos().list(part="snippet", id=youtube_id).execute()
+    items = response.get("items", [])
+    return items[0]["snippet"].get("description") if items else None
+
+
 # Async wrappers
 async def get_subscriptions(user) -> list[dict]:
     return await asyncio.to_thread(_fetch_subscriptions, user)
@@ -124,3 +157,8 @@ async def get_subscriptions(user) -> list[dict]:
 
 async def get_channel_videos(user, channel_id: str, max_results: int = 20) -> list[dict]:
     return await asyncio.to_thread(_fetch_channel_videos, user, channel_id, max_results)
+
+
+async def get_video_chapters(user, youtube_id: str) -> list[tuple[int, str]]:
+    description = await asyncio.to_thread(_fetch_video_description, user, youtube_id)
+    return parse_chapters(description)
