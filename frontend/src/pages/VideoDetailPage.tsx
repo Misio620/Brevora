@@ -4,11 +4,12 @@ import { useVideo, useUpdateMetadata, useProcessVideo } from '@/hooks/useVideos'
 import SummaryDisplay from '@/components/video/SummaryDisplay'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import DemoBanner from '@/components/common/DemoBanner'
+import EmptyState from '@/components/common/EmptyState'
 
 export default function VideoDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { data: video, isLoading, refetch } = useVideo(id || '')
+  const { data: video, isPending, error, refetch } = useVideo(id || '')
   const updateMeta = useUpdateMetadata()
   const processMutation = useProcessVideo()
 
@@ -39,15 +40,47 @@ export default function VideoDetailPage() {
   // Dynamic page title
   const displayTitle = video?.translated_title || video?.title
   useEffect(() => {
-    if (displayTitle) {
-      document.title = `${displayTitle} — Brevora`
-    }
+    document.title = displayTitle ? `${displayTitle} — Brevora` : 'Brevora'
   }, [displayTitle])
 
-  if (isLoading || !video) {
+  // isPending 也涵蓋重試暫停（分頁在背景、離線），這時還不能判定失敗
+  if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <LoadingSpinner />
+      </div>
+    )
+  }
+
+  // 載入失敗或影片不存在：顯示說明與返回入口，避免只剩空白頁
+  if (error || !video) {
+    const notFound = !error || error.message === 'Video not found'
+    return (
+      <div id="main-content" className="flex min-h-screen items-center justify-center bg-transparent px-6">
+        <section className="glass-card-strong w-full max-w-md rounded-xl border border-slate-700/50 px-6">
+          <EmptyState
+            title={notFound ? '找不到這部影片' : '影片載入失敗'}
+            description={notFound ? '連結可能有誤，或這部影片尚未同步到 Brevora' : error?.message}
+            action={
+              <div className="flex justify-center gap-2">
+                {!notFound && (
+                  <button
+                    onClick={() => refetch()}
+                    className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-slate-600"
+                  >
+                    重新載入
+                  </button>
+                )}
+                <button
+                  onClick={() => navigate('/')}
+                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+                >
+                  回到影片總覽
+                </button>
+              </div>
+            }
+          />
+        </section>
       </div>
     )
   }
