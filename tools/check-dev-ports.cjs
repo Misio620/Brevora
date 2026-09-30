@@ -1,17 +1,34 @@
 const net = require('node:net');
 
 // 只檢查連接埠；不推論行程所有權，也不終止任何行程。
-function checkPort(port) {
+function canBind(port) {
   return new Promise((resolve, reject) => {
     const server = net.createServer();
     server.once('error', error => {
-      if (error.code === 'EADDRINUSE') resolve({ port, available: false });
+      if (error.code === 'EADDRINUSE') resolve(false);
       else reject(error);
     });
     server.listen({ port, exclusive: true }, () => {
-      server.close(error => error ? reject(error) : resolve({ port, available: true }));
+      server.close(error => error ? reject(error) : resolve(true));
     });
   });
+}
+
+// Windows 上別的行程只監聽 0.0.0.0 或 127.0.0.1 時，canBind 仍可能成功，所以再實際連線確認
+function canConnect(host, port) {
+  return new Promise(resolve => {
+    const socket = net.connect({ host, port });
+    socket.setTimeout(500);
+    socket.once('connect', () => { socket.destroy(); resolve(true); });
+    socket.once('timeout', () => { socket.destroy(); resolve(false); });
+    socket.once('error', () => resolve(false));
+  });
+}
+
+async function checkPort(port) {
+  const listening = (await canConnect('127.0.0.1', port)) || (await canConnect('::1', port));
+  const available = !listening && await canBind(port);
+  return { port, available };
 }
 
 async function checkPorts(ports = [5173, 8000]) {

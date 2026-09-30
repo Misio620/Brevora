@@ -38,7 +38,7 @@ Google OAuth 的 redirect_uri 由 `backend/.env` 的 `BACKEND_URL` 組成（`bac
 
 ## 待辦
 
-- [ ] Google OAuth 同意畫面名稱需到 Google Cloud Console 手動改成 Brevora
+- [x] Google OAuth 同意畫面名稱改成 Brevora（2026-09-30 使用者完成）
 - [ ] 部署上線時設定後端 log 輸出到檔案
 
 ## 相依套件
