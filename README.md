@@ -6,6 +6,8 @@
 
 **[線上 Demo（免登入）](https://brevora-beta.vercel.app/)** · [決策紀錄](docs/decisions.md) · [設計過程](docs/design-process/README.md) · [English](README.en.md)
 
+![Brevora 影片總覽：訂閱頻道的影片與 AI 筆記預覽](docs/screenshots/desktop-feed.png)
+
 ---
 
 ## 問題
@@ -40,6 +42,15 @@
 
 4. 點任一時間戳，就會跳到原片的那一秒，可以查證筆記或深入觀看
 5. 用已讀、收藏、頻道、搜尋管理影片
+
+![節目筆記頁：每個要點前的時間戳都可以點擊，跳到原片的那一秒](docs/screenshots/desktop-notes.png)
+
+手機版：
+
+<p>
+  <img src="docs/screenshots/mobile-feed.png" alt="手機版影片總覽" width="280">
+  <img src="docs/screenshots/mobile-notes.png" alt="手機版節目筆記，時間戳可點擊" width="280">
+</p>
 
 **為什麼筆記是這個結構？** 由我提出需求，和 Claude 討論後定案。五個要點大致就能掌握影片全貌；時間戳可以點回原片，讓筆記的每一點都能回到原始內容確認。
 
