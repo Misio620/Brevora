@@ -160,10 +160,10 @@ async def main() -> None:
         print(f"{label} generating...", flush=True)
         started = time.monotonic()
         try:
-            video["summary"] = await ai.generate_summary(video["youtube_id"], video["_chapters"])
-            video["chapters_used"] = len(video["_chapters"])
-            # Records the model that actually answered, which may be the fallback
-            video["model"] = ai.last_model_used
+            summary = await ai.generate_summary(video["youtube_id"], video["_chapters"])
+            video["summary"] = summary.text
+            video["model"] = summary.model
+            video["chapters_used"] = summary.chapters_used
             video["translated_title"] = await ai.translate_title(video["title"])
         except Exception as e:
             failures += 1
