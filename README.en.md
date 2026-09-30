@@ -4,7 +4,7 @@
 
 The name comes from the Latin *brevis* (brief) + *ora* (time).
 
-**[Live demo (no login)](DEMO_URL)** · [Decision log (Chinese)](docs/decisions.md) · [Design process (Chinese)](docs/design-process/README.md) · [中文](README.md)
+**[Live demo (no login)](https://brevora-beta.vercel.app/)** · [Decision log (Chinese)](docs/decisions.md) · [Design process (Chinese)](docs/design-process/README.md) · [中文](README.md)
 
 ---
 

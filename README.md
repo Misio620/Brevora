@@ -4,7 +4,7 @@
 
 名字源自拉丁文 *brevis*（簡短）+ *ora*（時間）。
 
-**[線上 Demo（免登入）](DEMO_URL)** · [決策紀錄](docs/decisions.md) · [設計過程](docs/design-process/README.md) · [English](README.en.md)
+**[線上 Demo（免登入）](https://brevora-beta.vercel.app/)** · [決策紀錄](docs/decisions.md) · [設計過程](docs/design-process/README.md) · [English](README.en.md)
 
 ---
 
