@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import uuid
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
@@ -235,8 +236,15 @@ async def _run_ai_processing(user_id: str, video_id: str, youtube_id: str, title
     """Background task to generate AI summary."""
     async with async_session() as db:
         try:
-            # Generate summary
-            summary = await ai.generate_summary(youtube_id)
+            # Creator chapters anchor the note's timestamps; notes still work without them
+            chapters = []
+            try:
+                user = await db.get(User, uuid.UUID(user_id))
+                chapters = await youtube.get_video_chapters(user, youtube_id)
+            except Exception as e:
+                logger.warning(f"Could not fetch chapters for {youtube_id}: {e}")
+
+            summary = await ai.generate_summary(youtube_id, chapters)
 
             # Translate title
             translated_title = await ai.translate_title(title)

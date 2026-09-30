@@ -32,12 +32,13 @@ SUMMARY_PROMPT = """請為這支 YouTube 影片生成一份「節目筆記」，
 
 ## 五個關鍵要點
 - 僅列出 5 點，挑選最重要的五個重點，依影片時間順序排列。
+- 五點合起來要能呈現影片全貌：涵蓋影片的前、中、後段，不可只集中在前半部。
 - 每點格式：[mm:ss] 以動詞開頭的重點說明（影片超過一小時用 [h:mm:ss]），時間戳不要加反引號或其他符號。
 - 內容聚焦在「方法、步驟、框架、案例或關鍵論點」，而非空泛心得。
 
 ## 延伸重點
 - 可選，0–5 點。若影片內容較長且有其他值得記錄的次要重點，額外條列補充；沒有就省略整個段落。
-- 每點仍以動詞開頭，描述具體做法或觀點。
+- 每點同樣以時間戳開頭（格式同上），接著以動詞開頭，描述具體做法或觀點。
 
 ## 行動呼籲
 - 1–3 句，說明觀眾看完這支影片後「可以立刻做什麼」。
@@ -49,6 +50,15 @@ SUMMARY_PROMPT = """請為這支 YouTube 影片生成一份「節目筆記」，
 - 句子力求短而清楚。
 - 優先保留具體概念、步驟、數字與案例。
 - 直接輸出筆記，不要加開場白或結語。"""
+
+CHAPTERS_PROMPT = """
+
+[創作者標註的章節]
+以下是影片說明欄中創作者標註的章節，時間是準確的，請作為定位依據：
+{chapters}
+
+- 每個時間戳必須落在該內容所屬章節的時間範圍內。
+- 章節只用來定位時間與確認涵蓋範圍，筆記內容仍須根據影片實際內容。"""
 
 TRANSLATE_PROMPT = """請將以下 YouTube 影片標題翻譯成繁體中文。
 只回傳翻譯後的標題，不要有任何其他說明或符號。
@@ -116,14 +126,31 @@ def _has_cjk(text: str) -> bool:
     )
 
 
-async def generate_summary(video_id: str) -> str:
-    """Generates Markdown video notes by letting Gemini watch the YouTube video."""
-    logger.info(f"Generating summary for {video_id} with {settings.GEMINI_MODEL}")
+def _format_timestamp(seconds: int, with_hours: bool) -> str:
+    h, rest = divmod(seconds, 3600)
+    m, s = divmod(rest, 60)
+    return f"{h}:{m:02d}:{s:02d}" if with_hours else f"{m:02d}:{s:02d}"
+
+
+def _chapters_prompt(chapters: list[tuple[int, str]]) -> str:
+    with_hours = chapters[-1][0] >= 3600
+    lines = "\n".join(f"[{_format_timestamp(start, with_hours)}] {title}" for start, title in chapters)
+    return CHAPTERS_PROMPT.format(chapters=lines)
+
+
+async def generate_summary(video_id: str, chapters: list[tuple[int, str]] | None = None) -> str:
+    """Generates Markdown video notes by letting Gemini watch the YouTube video.
+
+    Creator chapters, when the video has them, anchor the timestamps: on videos over
+    two hours Gemini's own timestamps drift by tens of minutes without them.
+    """
+    logger.info(f"Generating summary for {video_id} with {settings.GEMINI_MODEL} ({len(chapters or [])} chapters)")
+    prompt = SUMMARY_PROMPT + (_chapters_prompt(chapters) if chapters else "")
     contents = types.Content(
         role="user",
         parts=[
             types.Part(file_data=types.FileData(file_uri=f"https://www.youtube.com/watch?v={video_id}")),
-            types.Part(text=SUMMARY_PROMPT),
+            types.Part(text=prompt),
         ],
     )
     # Low media resolution keeps long podcasts within the context window; notes rely mostly on audio
