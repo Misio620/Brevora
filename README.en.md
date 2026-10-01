@@ -215,6 +215,7 @@ brevora/
 │       └── demo/           # Demo data (demo-data.json)
 ├── scripts/
 │   ├── backend.mjs              # Cross-platform backend install and start
+│   ├── check-dev-ports.cjs      # Checks ports 5173 and 8000 before pnpm dev
 │   └── generate_demo_data.py    # Generates the demo data
 └── docs/
     ├── decisions.md        # Decision log

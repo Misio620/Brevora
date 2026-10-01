@@ -215,6 +215,7 @@ brevora/
 │       └── demo/           # demo 資料（demo-data.json）
 ├── scripts/
 │   ├── backend.mjs              # 跨平台的後端安裝與啟動
+│   ├── check-dev-ports.cjs      # pnpm dev 前檢查 5173、8000 是否被占用
 │   └── generate_demo_data.py    # 生成 demo 資料
 └── docs/
     ├── decisions.md        # 決策紀錄
