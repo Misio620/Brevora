@@ -6,25 +6,17 @@ __pycache__/
 venv/
 .venv/
 
-# Environment & Secrets
+# Environment & secrets (never commit)
 .env
 backend/secrets/
-backend/.env
 
-# Build artifacts
-backend/downloads/
-backend/bin/
-backend/ai_debug.log
-backend/store.json
-backend/dev.log
-
-# Node
+# Node (frontend/.gitignore covers the frontend's own build output and logs)
 node_modules/
 dist/
-frontend/node_modules/
-frontend/dist/
 *.tsbuildinfo
-frontend/dev.log
+
+# Logs
+*.log
 
 # IDE
 .vscode/
