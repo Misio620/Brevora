@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useSyncVideos } from '@/hooks/useVideos'
-import { useToast } from '@/components/common/Toast'
+import { useToast } from '@/hooks/useToast'
 import { logout } from '@/lib/auth'
 import { DEMO_MODE } from '@/lib/demoMode'
 
