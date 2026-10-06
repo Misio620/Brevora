@@ -12,6 +12,7 @@
 本機與雲端 session 共用 GitHub 的 `main`：
 - 不直接推 `main`：從最新的 `origin/main` 開分支 → 開 PR → 使用者合併。一個 PR 只做一件事，拆成小 commit。本機無法開 PR 時，推分支後請使用者在 GitHub 開。
 - PR 描述寫：改了什麼、為什麼、怎麼驗證（沒驗證的要寫明）。
+- PR 要等 CI（`.github/workflows/ci.yml`）通過才合併；改到後端行為時，在 `backend/tests/` 補上或更新測試。
 - 需要使用者資料庫、Google 登入或瀏覽器實測的工作在本機做，其餘可在雲端做；兩邊不同時改同一個檔案。
 
 ## 品牌視覺

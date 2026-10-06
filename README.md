@@ -1,5 +1,7 @@
 # Brevora
 
+[![CI](https://github.com/Misio620/Brevora/actions/workflows/ci.yml/badge.svg)](https://github.com/Misio620/Brevora/actions/workflows/ci.yml)
+
 > 訂閱的 YouTube 影片，先看 AI 節目筆記，再決定要不要看原片。
 
 名字源自拉丁文 *brevis*（簡短）+ *ora*（時間）。
@@ -173,6 +175,22 @@ VITE_DEMO_MODE=true pnpm dev
 </details>
 
 <details>
+<summary>執行測試</summary>
+
+後端測試用真的 PostgreSQL，Gemini、Google 登入與 YouTube API 都以假的回應代替，不需要任何 API key。
+
+```bash
+createdb brevora_test        # 測試專用資料庫，測試會自行建立資料表
+cd backend
+venv/bin/pip install -r requirements-dev.txt
+venv/bin/python -m pytest     # Windows: venv\Scripts\python -m pytest
+```
+
+資料庫連線不是 `postgres:postgres@localhost:5432/brevora_test` 時，用環境變數 `TEST_DATABASE_URL` 指定。每個 PR 會由 GitHub Actions 自動跑同樣的測試，以及前端的 lint 與兩種 build。
+
+</details>
+
+<details>
 <summary>重新生成 Demo 資料</summary>
 
 需要環境變數 `GOOGLE_API_KEY` 與 `YOUTUBE_API_KEY`（YouTube Data API v3）。
@@ -202,11 +220,12 @@ Gemini 免費方案有額度限制，中途失敗時直接重跑即可，只會�
 ```
 brevora/
 ├── backend/
-│   └── app/
-│       ├── routers/        # API：auth、channels、videos
-│       ├── services/       # ai.py（Gemini）、youtube.py、encryption.py
-│       ├── models/         # SQLAlchemy 資料表
-│       └── middleware/     # JWT 驗證
+│   ├── app/
+│   │   ├── routers/        # API：auth、channels、videos
+│   │   ├── services/       # ai.py（Gemini）、youtube.py、encryption.py
+│   │   ├── models/         # SQLAlchemy 資料表
+│   │   └── middleware/     # JWT 驗證
+│   └── tests/              # pytest（真的 PostgreSQL，外部服務以假的回應代替）
 ├── frontend/
 │   └── src/
 │       ├── pages/          # 登入、影片總覽、影片詳細頁

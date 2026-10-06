@@ -1,5 +1,7 @@
 # Brevora
 
+[![CI](https://github.com/Misio620/Brevora/actions/workflows/ci.yml/badge.svg)](https://github.com/Misio620/Brevora/actions/workflows/ci.yml)
+
 > Read AI show notes for your YouTube subscriptions first, then decide whether to watch.
 
 The name comes from the Latin *brevis* (brief) + *ora* (time).
@@ -173,6 +175,22 @@ Requires Node.js 20+, Python 3.11+, PostgreSQL, pnpm, a Google Cloud project (Yo
 </details>
 
 <details>
+<summary>Running the tests</summary>
+
+Backend tests use a real PostgreSQL database. Gemini, Google sign-in and the YouTube API are faked, so no API keys are needed.
+
+```bash
+createdb brevora_test        # dedicated test database; the tests create the tables
+cd backend
+venv/bin/pip install -r requirements-dev.txt
+venv/bin/python -m pytest     # Windows: venv\Scripts\python -m pytest
+```
+
+If your database is not at `postgres:postgres@localhost:5432/brevora_test`, set `TEST_DATABASE_URL`. GitHub Actions runs the same tests on every PR, plus the frontend lint and both builds.
+
+</details>
+
+<details>
 <summary>Regenerating the demo data</summary>
 
 Requires the `GOOGLE_API_KEY` and `YOUTUBE_API_KEY` (YouTube Data API v3) environment variables.
@@ -202,11 +220,12 @@ The Gemini free tier has quota limits. If a run fails partway, run it again; onl
 ```
 brevora/
 ├── backend/
-│   └── app/
-│       ├── routers/        # API: auth, channels, videos
-│       ├── services/       # ai.py (Gemini), youtube.py, encryption.py
-│       ├── models/         # SQLAlchemy tables
-│       └── middleware/     # JWT auth
+│   ├── app/
+│   │   ├── routers/        # API: auth, channels, videos
+│   │   ├── services/       # ai.py (Gemini), youtube.py, encryption.py
+│   │   ├── models/         # SQLAlchemy tables
+│   │   └── middleware/     # JWT auth
+│   └── tests/              # pytest (real PostgreSQL, external services faked)
 ├── frontend/
 │   └── src/
 │       ├── pages/          # Login, feed, video detail
