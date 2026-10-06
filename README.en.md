@@ -90,7 +90,7 @@ Full details are in the [decision log](docs/decisions.md) (Chinese).
 
 - [x] Store summaries per video so each video is processed only once
 - [x] My notes: write your own takeaways after the AI notes, with filter and search
-- [ ] Security fixes: JWT passed in a URL parameter, missing OAuth `state`, secrets not checked against their defaults, raw error messages returned to the client, refreshed tokens not saved to the database
+- [x] Security fixes: JWT passed in a URL parameter, missing OAuth `state`, secrets not checked against their defaults, raw error messages returned to the client, refreshed tokens not saved to the database
 - [ ] Automated tests and CI
 - [ ] Redesign the logo and visual style (the current version is temporary)
 
