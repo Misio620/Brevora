@@ -260,6 +260,7 @@ async def _run_ai_processing(user_id: str, video_id: uuid.UUID, youtube_id: str,
             try:
                 user = await db.get(User, uuid.UUID(user_id))
                 chapters = await youtube.get_video_chapters(user, youtube_id)
+                await db.commit()  # keep a refreshed token even if note generation fails later
             except Exception as e:
                 logger.warning(f"Could not fetch chapters for {youtube_id}: {e}")
 
@@ -283,10 +284,13 @@ async def _run_ai_processing(user_id: str, video_id: uuid.UUID, youtube_id: str,
             logger.info(f"AI processing complete for {youtube_id} with {summary.model}")
 
         except Exception as e:
-            logger.error(f"AI processing failed for {youtube_id}: {e}")
+            # Full details stay in the server log; the shared note only gets a safe message
+            logger.exception(f"AI processing failed for {youtube_id}")
             await db.rollback()
             await db.execute(
-                update(Video).where(this_run).values(processing_status="error", error_message=str(e))
+                update(Video)
+                .where(this_run)
+                .values(processing_status="error", error_message=ai.user_facing_error(e))
             )
             await db.commit()
 
@@ -304,6 +308,13 @@ async def sync_videos(
 
     if not channel_ids:
         return SyncResponse(status="done", new_videos=0)
+
+    # Refresh an expired token once here, not once per channel in the concurrent fetches below
+    try:
+        await youtube.ensure_fresh_credentials(current_user)
+    except Exception:
+        logger.exception(f"Could not refresh Google token for user {current_user.id}")
+        raise HTTPException(status_code=502, detail="Failed to fetch videos from YouTube")
 
     semaphore = asyncio.Semaphore(SYNC_CONCURRENCY)
 

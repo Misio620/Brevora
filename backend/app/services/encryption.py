@@ -14,7 +14,8 @@ def _get_fernet() -> Fernet | None:
 def encrypt_token(token: str) -> str:
     f = _get_fernet()
     if not f:
-        return token  # No encryption key configured, store plain (dev only)
+        # Never store OAuth tokens in plain text; the API refuses to start without a key
+        raise RuntimeError("ENCRYPTION_KEY is not configured")
     return f.encrypt(token.encode()).decode()
 
 

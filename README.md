@@ -148,8 +148,8 @@ VITE_DEMO_MODE=true pnpm dev
    | `GEMINI_FALLBACK_MODEL` | 選填，主要模型失敗時使用，預設 `gemini-3.5-flash` |
    | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | OAuth 憑證 |
    | `DATABASE_URL` | PostgreSQL 連線字串 |
-   | `JWT_SECRET` | 隨機字串（`python -c "import secrets; print(secrets.token_hex(32))"`） |
-   | `ENCRYPTION_KEY` | Fernet key（`python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`） |
+   | `JWT_SECRET` | 必填，至少 32 字元的隨機字串（`python -c "import secrets; print(secrets.token_hex(32))"`） |
+   | `ENCRYPTION_KEY` | 必填，用來加密資料庫裡的 Google token（`python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`） |
    | `FRONTEND_URL` / `BACKEND_URL` | `http://localhost:5173` / `http://localhost:8000` |
 
 3. 建立資料表：

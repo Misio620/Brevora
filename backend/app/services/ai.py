@@ -8,7 +8,7 @@ import logging
 from dataclasses import dataclass
 
 from google import genai
-from google.genai import types
+from google.genai import errors, types
 
 from app.config import get_settings
 
@@ -175,3 +175,14 @@ async def translate_title(title: str) -> str | None:
     translated = (await _generate(TRANSLATE_PROMPT.format(title=title)))[0].strip()
     logger.info(f"Title translation: {title} -> {translated}")
     return translated
+
+
+def user_facing_error(error: Exception) -> str:
+    """A message safe to show users. Raw errors can carry API responses, project IDs
+    and quota details, so they only go to the server log."""
+    if isinstance(error, errors.APIError):
+        if error.code == 429:
+            return "AI 服務的使用額度暫時用完，請稍後再試"
+        if error.code >= 500:
+            return "AI 服務暫時忙碌，請稍後再試"
+    return "筆記生成失敗，請稍後再試"
