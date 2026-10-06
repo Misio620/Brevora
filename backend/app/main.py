@@ -1,9 +1,10 @@
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.config import get_settings
+from app.config import get_settings, secret_problems
 from app.routers import auth, channels, videos
 
 logging.basicConfig(
@@ -13,7 +14,18 @@ logging.basicConfig(
 
 settings = get_settings()
 
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    # Refuse to start with missing or public secrets instead of running insecurely
+    problems = secret_problems(settings)
+    if problems:
+        raise RuntimeError("Insecure configuration in backend/.env:\n- " + "\n- ".join(problems))
+    yield
+
+
 app = FastAPI(
+    lifespan=lifespan,
     title="Brevora API",
     description="AI-powered video digest — grasp key insights from your subscriptions in minutes",
     version="1.0.0",

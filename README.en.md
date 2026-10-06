@@ -148,8 +148,8 @@ Requires Node.js 20+, Python 3.11+, PostgreSQL, pnpm, a Google Cloud project (Yo
    | `GEMINI_FALLBACK_MODEL` | Optional. Used when the primary model fails, default `gemini-3.5-flash` |
    | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | OAuth credentials |
    | `DATABASE_URL` | PostgreSQL connection string |
-   | `JWT_SECRET` | Random string (`python -c "import secrets; print(secrets.token_hex(32))"`) |
-   | `ENCRYPTION_KEY` | Fernet key (`python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`) |
+   | `JWT_SECRET` | Required. Random string of at least 32 characters (`python -c "import secrets; print(secrets.token_hex(32))"`) |
+   | `ENCRYPTION_KEY` | Required. Fernet key that encrypts stored Google tokens (`python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`) |
    | `FRONTEND_URL` / `BACKEND_URL` | `http://localhost:5173` / `http://localhost:8000` |
 
 3. Create the tables:
