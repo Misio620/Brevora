@@ -93,7 +93,7 @@ Full details are in the [decision log](docs/decisions.md) (Chinese).
 - [x] Store summaries per video so each video is processed only once
 - [x] My notes: write your own takeaways after the AI notes, with filter and search
 - [x] Security fixes: JWT passed in a URL parameter, missing OAuth `state`, secrets not checked against their defaults, raw error messages returned to the client, refreshed tokens not saved to the database
-- [ ] Automated tests and CI
+- [x] Automated tests and CI: backend pytest and browser end-to-end tests, run on every PR
 - [ ] Redesign the logo and visual style (the current version is temporary)
 
 ## Tech stack
@@ -186,7 +186,20 @@ venv/bin/pip install -r requirements-dev.txt
 venv/bin/python -m pytest     # Windows: venv\Scripts\python -m pytest
 ```
 
-If your database is not at `postgres:postgres@localhost:5432/brevora_test`, set `TEST_DATABASE_URL`. GitHub Actions runs the same tests on every PR, plus the frontend lint and both builds.
+If your database is not at `postgres:postgres@localhost:5432/brevora_test`, set `TEST_DATABASE_URL`.
+
+End-to-end tests drive a real browser with Playwright. They start the frontend servers they need and do not need the backend:
+
+```bash
+cd frontend
+pnpm exec playwright install chromium   # first run only
+pnpm test:e2e
+```
+
+- **Demo:** on the Vercel demo build, the feed shows 6 videos without signing in, every note timestamp links to that second of the video, and your own note and favorites survive a reload.
+- **Sign-in:** on the dev server, where React StrictMode runs the page's setup twice, a faked backend checks that the one-time login code is exchanged once, and that an expired code returns to the login page with an explanation.
+
+GitHub Actions runs the backend tests and the end-to-end tests on every PR, plus the frontend lint and both builds.
 
 </details>
 
@@ -227,11 +240,12 @@ brevora/
 │   │   └── middleware/     # JWT auth
 │   └── tests/              # pytest (real PostgreSQL, external services faked)
 ├── frontend/
-│   └── src/
-│       ├── pages/          # Login, feed, video detail
-│       ├── components/
-│       ├── lib/            # API client, demo mode
-│       └── demo/           # Demo data (demo-data.json)
+│   ├── src/
+│   │   ├── pages/          # Login, feed, video detail
+│   │   ├── components/
+│   │   ├── lib/            # API client, demo mode
+│   │   └── demo/           # Demo data (demo-data.json)
+│   └── e2e/                # Playwright end-to-end tests
 ├── scripts/
 │   ├── backend.mjs              # Cross-platform backend install and start
 │   ├── check-dev-ports.cjs      # Checks ports 5173 and 8000 before pnpm dev

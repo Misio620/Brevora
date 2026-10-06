@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright (pnpm test:e2e)
+e2e-dist
+test-results
+playwright-report

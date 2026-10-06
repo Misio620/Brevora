@@ -93,7 +93,7 @@
 - [x] 摘要改存在影片層，同一支影片只生成一次
 - [x] 我的筆記：看完 AI 筆記後寫下自己的心得，可篩選與搜尋
 - [x] 安全性修補：JWT 放在網址參數、OAuth 缺少 `state`、密鑰沒有檢查是否仍是預設值、錯誤訊息直接回傳給前端、token 更新後沒有寫回資料庫
-- [ ] 自動化測試與 CI
+- [x] 自動化測試與 CI：後端 pytest、瀏覽器端到端測試，每個 PR 自動執行
 - [ ] 重新設計 Logo 與視覺風格（目前是暫時版本）
 
 ## 技術架構
@@ -186,7 +186,20 @@ venv/bin/pip install -r requirements-dev.txt
 venv/bin/python -m pytest     # Windows: venv\Scripts\python -m pytest
 ```
 
-資料庫連線不是 `postgres:postgres@localhost:5432/brevora_test` 時，用環境變數 `TEST_DATABASE_URL` 指定。每個 PR 會由 GitHub Actions 自動跑同樣的測試，以及前端的 lint 與兩種 build。
+資料庫連線不是 `postgres:postgres@localhost:5432/brevora_test` 時，用環境變數 `TEST_DATABASE_URL` 指定。
+
+端到端測試用 Playwright 在瀏覽器裡操作，會自動啟動需要的前端伺服器，不需要後端：
+
+```bash
+cd frontend
+pnpm exec playwright install chromium   # 第一次執行時安裝瀏覽器
+pnpm test:e2e
+```
+
+- **Demo**：用 Vercel 的 demo build，確認免登入看得到 6 支影片、筆記的時間戳都連到原片的那一秒、我的筆記與收藏重新整理後還在
+- **登入**：用開發模式（React StrictMode 會讓頁面的初始化執行兩次），以假的後端確認一次性登入碼只交換一次、失效時回到登入頁並說明原因
+
+每個 PR 會由 GitHub Actions 自動跑後端測試、端到端測試，以及前端的 lint 與兩種 build。
 
 </details>
 
@@ -227,11 +240,12 @@ brevora/
 │   │   └── middleware/     # JWT 驗證
 │   └── tests/              # pytest（真的 PostgreSQL，外部服務以假的回應代替）
 ├── frontend/
-│   └── src/
-│       ├── pages/          # 登入、影片總覽、影片詳細頁
-│       ├── components/
-│       ├── lib/            # API client、demo 模式
-│       └── demo/           # demo 資料（demo-data.json）
+│   ├── src/
+│   │   ├── pages/          # 登入、影片總覽、影片詳細頁
+│   │   ├── components/
+│   │   ├── lib/            # API client、demo 模式
+│   │   └── demo/           # demo 資料（demo-data.json）
+│   └── e2e/                # Playwright 端到端測試
 ├── scripts/
 │   ├── backend.mjs              # 跨平台的後端安裝與啟動
 │   ├── check-dev-ports.cjs      # pnpm dev 前檢查 5173、8000 是否被占用
