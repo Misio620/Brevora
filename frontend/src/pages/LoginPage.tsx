@@ -6,6 +6,7 @@ const LOGIN_ERRORS: Record<string, string> = {
   cancelled: '已取消 Google 登入',
   state: '登入驗證已過期或不一致，請重新登入',
   google: 'Google 登入失敗，請稍後再試',
+  expired: '登入連結已失效，請重新登入',
 }
 
 export default function LoginPage() {
