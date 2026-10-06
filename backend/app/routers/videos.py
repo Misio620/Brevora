@@ -283,10 +283,13 @@ async def _run_ai_processing(user_id: str, video_id: uuid.UUID, youtube_id: str,
             logger.info(f"AI processing complete for {youtube_id} with {summary.model}")
 
         except Exception as e:
-            logger.error(f"AI processing failed for {youtube_id}: {e}")
+            # Full details stay in the server log; the shared note only gets a safe message
+            logger.exception(f"AI processing failed for {youtube_id}")
             await db.rollback()
             await db.execute(
-                update(Video).where(this_run).values(processing_status="error", error_message=str(e))
+                update(Video)
+                .where(this_run)
+                .values(processing_status="error", error_message=ai.user_facing_error(e))
             )
             await db.commit()
 
