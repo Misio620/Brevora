@@ -44,8 +44,11 @@ export default function MyNote({ youtubeId, initialNote }: MyNoteProps) {
     else setStatus('saved')
   }
 
+  // The timer and the unmount cleanup call the latest flush; refs are updated after render, not during it
   const flushRef = useRef(flush)
-  flushRef.current = flush
+  useEffect(() => {
+    flushRef.current = flush
+  })
 
   // Save pending text when leaving the page; warn before closing the tab with unsaved text
   useEffect(() => {
