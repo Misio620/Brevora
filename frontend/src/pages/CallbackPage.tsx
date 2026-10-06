@@ -5,11 +5,8 @@ import LoadingSpinner from '@/components/common/LoadingSpinner'
 export default function CallbackPage() {
   useEffect(() => {
     const token = handleCallback()
-    if (token) {
-      window.location.href = '/'
-    } else {
-      window.location.href = '/login'
-    }
+    // replace() keeps /callback out of history, so Back never returns to it
+    window.location.replace(token ? '/' : '/login')
   }, [])
 
   return (
