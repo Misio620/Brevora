@@ -13,7 +13,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
 from app.config import get_settings
-from app.services.encryption import decrypt_token
+from app.services.encryption import decrypt_token, encrypt_token
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -46,34 +46,70 @@ def parse_chapters(description: str | None) -> list[tuple[int, str]]:
 
 
 def _build_credentials(user) -> Credentials:
-    """Build Google OAuth Credentials from a User model."""
+    """Build Google OAuth Credentials from a User model. Makes no network call."""
     access_token = decrypt_token(user.access_token) if user.access_token else None
     refresh_token = decrypt_token(user.refresh_token) if user.refresh_token else None
+    # google-auth compares expiry as naive UTC; without it, an expired token is never refreshed up front
+    expiry = user.token_expiry.astimezone(timezone.utc).replace(tzinfo=None) if user.token_expiry else None
 
-    creds = Credentials(
+    return Credentials(
         token=access_token,
         refresh_token=refresh_token,
         token_uri=YOUTUBE_TOKEN_URI,
         client_id=settings.GOOGLE_CLIENT_ID,
         client_secret=settings.GOOGLE_CLIENT_SECRET,
+        expiry=expiry,
     )
 
-    # Refresh if expired
-    if creds.expired and creds.refresh_token:
-        creds.refresh(Request())
 
+def _refresh_if_expired(creds: Credentials) -> bool:
+    """Refreshes an expired access token. Blocking. Returns True if it refreshed."""
+    if creds.refresh_token and (not creds.token or creds.expired):
+        creds.refresh(Request())
+        return True
+    return False
+
+
+def _save_credentials(user, creds: Credentials) -> None:
+    """Writes refreshed tokens back to the user; the caller's session commits them."""
+    user.access_token = encrypt_token(creds.token)
+    if creds.refresh_token:
+        user.refresh_token = encrypt_token(creds.refresh_token)
+    user.token_expiry = creds.expiry.replace(tzinfo=timezone.utc) if creds.expiry else None
+
+
+async def ensure_fresh_credentials(user) -> Credentials:
+    """Returns usable credentials, refreshing and saving the access token if it expired.
+
+    Saving matters: an unsaved token is refreshed again on every request after it
+    expires, which adds a round trip to Google each time.
+    """
+    creds = _build_credentials(user)
+    if await asyncio.to_thread(_refresh_if_expired, creds):
+        _save_credentials(user, creds)
+        logger.info(f"Refreshed Google access token for user {user.id}")
     return creds
 
 
-def _get_youtube_service(user):
-    creds = _build_credentials(user)
+async def _call(user, fetch, *args):
+    """Runs a blocking YouTube call with fresh credentials and saves any token it refreshed."""
+    creds = await ensure_fresh_credentials(user)
+    token_before = creds.token
+    result = await asyncio.to_thread(fetch, creds, *args)
+    # The client library also refreshes on its own when Google rejects a token early
+    if creds.token != token_before:
+        _save_credentials(user, creds)
+    return result
+
+
+def _get_youtube_service(creds: Credentials):
     # The discovery file cache needs oauth2client < 4.0 and only logs a warning on every build
     return build("youtube", "v3", credentials=creds, cache_discovery=False)
 
 
-def _fetch_subscriptions(user) -> list[dict]:
+def _fetch_subscriptions(creds: Credentials) -> list[dict]:
     """Fetches ALL subscriptions for a user (with pagination). Blocking."""
-    youtube = _get_youtube_service(user)
+    youtube = _get_youtube_service(creds)
     subscriptions = []
     next_page_token = None
 
@@ -101,9 +137,9 @@ def _fetch_subscriptions(user) -> list[dict]:
     return subscriptions
 
 
-def _fetch_channel_videos(user, channel_id: str, max_results: int = 20) -> list[dict]:
+def _fetch_channel_videos(creds: Credentials, channel_id: str, max_results: int = 20) -> list[dict]:
     """Fetches recent videos from a specific channel. Blocking."""
-    youtube = _get_youtube_service(user)
+    youtube = _get_youtube_service(creds)
     videos = []
 
     # Get the Uploads playlist ID
@@ -143,9 +179,9 @@ def _fetch_channel_videos(user, channel_id: str, max_results: int = 20) -> list[
     return videos
 
 
-def _fetch_video_description(user, youtube_id: str) -> str | None:
+def _fetch_video_description(creds: Credentials, youtube_id: str) -> str | None:
     """Fetches a video's description. Blocking."""
-    youtube = _get_youtube_service(user)
+    youtube = _get_youtube_service(creds)
     response = youtube.videos().list(part="snippet", id=youtube_id).execute()
     items = response.get("items", [])
     return items[0]["snippet"].get("description") if items else None
@@ -153,13 +189,13 @@ def _fetch_video_description(user, youtube_id: str) -> str | None:
 
 # Async wrappers
 async def get_subscriptions(user) -> list[dict]:
-    return await asyncio.to_thread(_fetch_subscriptions, user)
+    return await _call(user, _fetch_subscriptions)
 
 
 async def get_channel_videos(user, channel_id: str, max_results: int = 20) -> list[dict]:
-    return await asyncio.to_thread(_fetch_channel_videos, user, channel_id, max_results)
+    return await _call(user, _fetch_channel_videos, channel_id, max_results)
 
 
 async def get_video_chapters(user, youtube_id: str) -> list[tuple[int, str]]:
-    description = await asyncio.to_thread(_fetch_video_description, user, youtube_id)
+    description = await _call(user, _fetch_video_description, youtube_id)
     return parse_chapters(description)
