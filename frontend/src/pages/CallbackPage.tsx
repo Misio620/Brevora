@@ -6,13 +6,15 @@ export default function CallbackPage() {
   const handled = useRef(false)
 
   useEffect(() => {
-    // StrictMode runs effects twice in development. handleCallback() wipes the token
-    // from the URL, so a second run would find none and send a signed-in user to /login
+    // StrictMode runs effects twice in development. handleCallback() wipes the code from
+    // the URL and the code works once, so a second run would send a signed-in user to /login
     if (handled.current) return
     handled.current = true
-    const token = handleCallback()
-    // replace() keeps /callback out of history, so Back never returns to it
-    window.location.replace(token ? '/' : '/login')
+    void handleCallback().then(result => {
+      // replace() keeps /callback out of history, so Back never returns to it
+      const target = { 'signed-in': '/', 'no-code': '/login', expired: '/login?error=expired' }[result]
+      window.location.replace(target)
+    })
   }, [])
 
   return (

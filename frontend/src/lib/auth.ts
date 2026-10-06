@@ -1,16 +1,23 @@
-import { setToken, clearToken } from './api'
+import { api, setToken, clearToken } from './api'
 import { DEMO_MODE } from './demoMode'
 
-// The backend puts the JWT after # so it never reaches a server log; read it,
-// then wipe it from the address bar and this history entry right away
-export function handleCallback(): string | null {
-  const token = new URLSearchParams(window.location.hash.slice(1)).get('token')
+export type CallbackResult = 'signed-in' | 'no-code' | 'expired'
+
+// The backend sends a one-time code after #, never the JWT: the browser records this
+// URL in its history before the page can erase it, so whatever is in it must be
+// worthless once used. Read the code, wipe it from the address bar, trade it for the JWT
+export async function handleCallback(): Promise<CallbackResult> {
+  const code = new URLSearchParams(window.location.hash.slice(1)).get('code')
   window.history.replaceState(null, '', window.location.pathname)
-  if (token) {
-    setToken(token)
-    return token
+  if (!code) return 'no-code'
+  try {
+    const { access_token } = await api.post<{ access_token: string }>('/auth/exchange', { code })
+    setToken(access_token)
+    return 'signed-in'
+  } catch {
+    // Already used (e.g. reopened from history) or older than 60 seconds
+    return 'expired'
   }
-  return null
 }
 
 export function logout() {
