@@ -1,22 +1,26 @@
 import { useState, useEffect } from 'react'
-import { api } from '@/lib/api'
+import { getLoginUrl } from '@/lib/api'
+
+// Reason codes the backend adds as ?error= when it sends the browser back here
+const LOGIN_ERRORS: Record<string, string> = {
+  cancelled: '已取消 Google 登入',
+  state: '登入驗證已過期或不一致，請重新登入',
+  google: 'Google 登入失敗，請稍後再試',
+}
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error] = useState(() => {
+    const reason = new URLSearchParams(window.location.search).get('error')
+    return reason ? LOGIN_ERRORS[reason] ?? '登入失敗，請再試一次' : ''
+  })
 
   useEffect(() => { document.title = 'Brevora — 登入' }, [])
 
-  const handleLogin = async () => {
+  // A top-level navigation (not fetch) lets the backend set the state cookie it checks on return
+  const handleLogin = () => {
     setLoading(true)
-    setError('')
-    try {
-      const data = await api.get<{ auth_url: string }>('/auth/google/login')
-      window.location.href = data.auth_url
-    } catch {
-      setLoading(false)
-      setError('無法連線至伺服器，請稍後再試')
-    }
+    window.location.href = getLoginUrl()
   }
 
   return (

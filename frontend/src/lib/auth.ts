@@ -1,9 +1,11 @@
 import { setToken, clearToken } from './api'
 import { DEMO_MODE } from './demoMode'
 
+// The backend puts the JWT after # so it never reaches a server log; read it,
+// then wipe it from the address bar and this history entry right away
 export function handleCallback(): string | null {
-  const params = new URLSearchParams(window.location.search)
-  const token = params.get('token')
+  const token = new URLSearchParams(window.location.hash.slice(1)).get('token')
+  window.history.replaceState(null, '', window.location.pathname)
   if (token) {
     setToken(token)
     return token
