@@ -19,10 +19,6 @@ class UserResponse(BaseModel):
         )
 
 
-class LoginResponse(BaseModel):
-    auth_url: str
-
-
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
