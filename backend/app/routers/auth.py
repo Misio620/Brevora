@@ -1,19 +1,21 @@
+import hashlib
 import logging
 import secrets
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urlencode
 
 import httpx
-from fastapi import APIRouter, Depends, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import get_settings
 from app.database import get_db
 from app.middleware.auth import create_access_token, get_current_user
+from app.models.login_code import LoginCode
 from app.models.user import User
-from app.schemas.auth import UserResponse
+from app.schemas.auth import LoginCodeExchange, TokenResponse, UserResponse
 from app.services.encryption import encrypt_token
 
 logger = logging.getLogger(__name__)
@@ -29,6 +31,14 @@ YOUTUBE_SCOPES = "openid email profile https://www.googleapis.com/auth/youtube.r
 STATE_COOKIE = "oauth_state"
 STATE_COOKIE_PATH = "/auth/google"
 STATE_MAX_AGE = 600  # seconds to finish signing in with Google
+
+# The callback URL lands in browser history, so it carries a code that is useless
+# after one exchange or this many seconds, never the JWT itself
+LOGIN_CODE_TTL = 60
+
+
+def _hash_login_code(code: str) -> str:
+    return hashlib.sha256(code.encode()).hexdigest()
 
 
 def _login_failed(reason: str) -> RedirectResponse:
@@ -151,14 +161,41 @@ async def google_callback(
 
     await db.flush()
 
-    # Create JWT
-    jwt_token = create_access_token(str(user.id))
+    # Hand the frontend a one-time code; it exchanges the code for the JWT at /auth/exchange
+    now = datetime.now(timezone.utc)
+    login_code = secrets.token_urlsafe(32)
+    await db.execute(delete(LoginCode).where(LoginCode.expires_at < now))
+    db.add(LoginCode(
+        code_hash=_hash_login_code(login_code),
+        user_id=user.id,
+        expires_at=now + timedelta(seconds=LOGIN_CODE_TTL),
+    ))
+    # Commit before redirecting: the browser exchanges the code as soon as it lands
+    await db.commit()
 
-    # Redirect to frontend with the token in the fragment: browsers never send the part
-    # after # to a server, so it stays out of access logs and Referer headers
-    response = RedirectResponse(url=f"{settings.FRONTEND_URL}/callback#token={jwt_token}")
+    # The fragment never reaches a server, so the code also stays out of access logs
+    response = RedirectResponse(url=f"{settings.FRONTEND_URL}/callback#code={login_code}")
     response.delete_cookie(STATE_COOKIE, path=STATE_COOKIE_PATH)
     return response
+
+
+@router.post("/exchange", response_model=TokenResponse)
+async def exchange_login_code(body: LoginCodeExchange, db: AsyncSession = Depends(get_db)):
+    """Trades a one-time login code for a JWT. The delete makes each code work only once."""
+    result = await db.execute(
+        delete(LoginCode)
+        .where(
+            LoginCode.code_hash == _hash_login_code(body.code),
+            LoginCode.expires_at > datetime.now(timezone.utc),
+        )
+        .returning(LoginCode.user_id)
+    )
+    user_id = result.scalar_one_or_none()
+    user = await db.get(User, user_id) if user_id else None
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Login code is invalid or expired")
+
+    return TokenResponse(access_token=create_access_token(str(user.id)), user=UserResponse.from_user(user))
 
 
 @router.get("/me", response_model=UserResponse)
