@@ -228,6 +228,27 @@ Gemini 免費方案有額度限制，中途失敗時直接重跑即可，只會�
 
 </details>
 
+<details>
+<summary>部署完整版（手機也能用）</summary>
+
+只給自己用、全部免費方案：前端 Vercel、後端 Render、資料庫 Neon。Demo 的 Vercel 專案不動，完整版另開一個。
+
+1. **資料庫（Neon）**：建立專案，複製連線字串（`postgresql://...?sslmode=require`），可以直接貼進 `DATABASE_URL`，後端會自動轉成 asyncpg 的格式
+2. **後端（Render）**：New → Web Service → 連結這個 repo
+   - Root Directory：`backend`；Runtime：Docker（使用 `backend/Dockerfile`，啟動時會先跑資料表 migration）
+   - Instance Type：Free
+   - 環境變數：照「完整版」表格填寫，其中 `FRONTEND_URL` 填下一步的 Vercel 網址、`BACKEND_URL` 填 Render 給的網址（都是 `https://`，結尾不加 `/`）。`FRONTEND_URL` 要和瀏覽器網址列完全一致，否則會被 CORS 擋下
+3. **前端（Vercel）**：新增專案，Root Directory 設為 `frontend`，環境變數只填 `VITE_API_URL=<BACKEND_URL>`，不要設 `VITE_DEMO_MODE`
+4. **Google Cloud Console**：OAuth 用戶端的 Authorized redirect URIs 加入 `<BACKEND_URL>/auth/google/callback`（見 [docs/google_setup.md](docs/google_setup.md)）
+5. **手機（Android）**：用 Chrome 打開前端網址並登入，選單 →「安裝應用程式」（或「加到主畫面」）
+
+免費方案的限制：
+
+- Render 閒置一段時間後會休眠，下次打開要多等幾十秒
+- App 在 Google 的「測試」狀態時，登入大約每 7 天要重新做一次；Brevora 的登入本身也是 7 天有效
+
+</details>
+
 ## 專案結構
 
 ```

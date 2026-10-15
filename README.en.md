@@ -228,6 +228,27 @@ The Gemini free tier has quota limits. If a run fails partway, run it again; onl
 
 </details>
 
+<details>
+<summary>Deploying the full version (usable on a phone)</summary>
+
+For personal use on free plans only: frontend on Vercel, backend on Render, database on Neon. Leave the demo's Vercel project alone and create a second one for the full version.
+
+1. **Database (Neon)**: create a project and copy its connection string (`postgresql://...?sslmode=require`). It can go into `DATABASE_URL` as is; the backend converts it to the asyncpg format.
+2. **Backend (Render)**: New → Web Service → connect this repo.
+   - Root Directory: `backend`; Runtime: Docker (uses `backend/Dockerfile`, which runs the database migrations on start).
+   - Instance Type: Free.
+   - Environment variables: as in the full-version table, with `FRONTEND_URL` set to the Vercel URL from the next step and `BACKEND_URL` set to the URL Render gives you (both `https://`, no trailing `/`). `FRONTEND_URL` must match the browser's address bar exactly, or CORS blocks the requests.
+3. **Frontend (Vercel)**: new project, Root Directory `frontend`, one environment variable `VITE_API_URL=<BACKEND_URL>`. Do not set `VITE_DEMO_MODE`.
+4. **Google Cloud Console**: add `<BACKEND_URL>/auth/google/callback` to the OAuth client's Authorized redirect URIs (see [docs/google_setup.md](docs/google_setup.md)).
+5. **Phone (Android)**: open the frontend URL in Chrome, sign in, then menu → "Install app" (or "Add to Home screen").
+
+Limits of the free plans:
+
+- Render puts the backend to sleep when idle; the next visit waits a few dozen seconds.
+- While the Google app is in "Testing", signing in has to be redone about every 7 days; Brevora's own sign-in also lasts 7 days.
+
+</details>
+
 ## Project structure
 
 ```
