@@ -1,7 +1,9 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 from cryptography.fernet import Fernet
+from sqlalchemy.engine import make_url
 
 # The old default, published in this repo; a server signing JWTs with it lets anyone forge logins
 _PUBLIC_JWT_SECRETS = {"", "change-me-in-production"}
@@ -35,6 +37,30 @@ class Settings(BaseSettings):
     BACKEND_URL: str = "http://localhost:8000"
 
     model_config = {"env_file": ".env", "extra": "ignore"}
+
+    @field_validator("DATABASE_URL")
+    @classmethod
+    def use_asyncpg(cls, value: str) -> str:
+        return asyncpg_database_url(value)
+
+
+def asyncpg_database_url(value: str) -> str:
+    """Accepts the connection string a hosted Postgres (e.g. Neon) hands out as is.
+
+    Those use the plain postgresql:// scheme and libpq's sslmode / channel_binding
+    parameters; asyncpg needs its own driver name and rejects both parameters
+    (connect() got an unexpected keyword argument 'sslmode'), so the server would not start.
+    """
+    url = make_url(value)
+    if url.drivername in ("postgres", "postgresql"):
+        url = url.set(drivername="postgresql+asyncpg")
+    if url.drivername != "postgresql+asyncpg":
+        return value
+    sslmode = url.query.get("sslmode")
+    url = url.difference_update_query(["sslmode", "channel_binding"])
+    if sslmode and "ssl" not in url.query:
+        url = url.update_query_dict({"ssl": sslmode})
+    return url.render_as_string(hide_password=False)
 
 
 @lru_cache()
