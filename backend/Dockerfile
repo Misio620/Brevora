@@ -9,5 +9,5 @@ COPY alembic/ ./alembic/
 COPY alembic.ini .
 COPY app/ ./app/
 
-# Run migrations then start server
-CMD alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000
+# Run migrations then start server; hosts like Render pass the port to listen on in $PORT
+CMD alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
