@@ -45,3 +45,22 @@ test('my note and favorites survive a reload', async ({ page }) => {
   await expect(card.getByRole('img', { name: '有我的筆記' })).toBeVisible()
   await expect(card.getByRole('button', { name: '取消收藏' })).toBeVisible()
 })
+
+// The demo is the production build, so this also covers the full version's manifest
+test('can be installed to a phone home screen', async ({ page, request }) => {
+  await page.goto('/')
+  const href = await page.locator('link[rel="manifest"]').getAttribute('href')
+  const response = await request.get(href!)
+  expect(response.ok()).toBe(true)
+
+  // What Android Chrome needs before it offers to install the app
+  const manifest = await response.json()
+  expect(manifest).toMatchObject({ name: 'Brevora', start_url: '/', display: 'standalone' })
+  const sizes = manifest.icons.map((icon: { sizes: string }) => icon.sizes)
+  expect(sizes).toEqual(expect.arrayContaining(['192x192', '512x512']))
+  for (const icon of manifest.icons) {
+    const image = await request.get(icon.src)
+    expect(image.ok()).toBe(true)
+    expect(image.headers()['content-type']).toBe('image/png')
+  }
+})
