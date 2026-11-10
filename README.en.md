@@ -27,6 +27,7 @@ My old routine was to pick a few shows I cared about most each week, watch them 
 - **Skim first, then decide.** Watch the original only when it is worth it, and filter out the rest. Notes are a filter, not a replacement for the source.
 - **I choose the sources.** Notes come only from the original videos I subscribe to, with no one else's summary in between.
 - **Output, not just input.** Input without output does not lead to much growth. Notes make the input wider and deeper.
+- **Three ideas a week.** Go from "watch when I have time, otherwise let it pile up" to focusing on three ideas a week, with my time concentrated on what I actually care about.
 
 ## How it works
 
@@ -60,7 +61,6 @@ On mobile:
 ## Results
 
 - I have used it for about a month, 2–3 times a week.
-- I went from "watch when I have time, otherwise let it pile up" to focusing on three ideas a week, with my time concentrated on what I actually care about.
 - I am the only user so far. No other user research has been done.
 
 ## My role
